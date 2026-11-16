@@ -4,1474 +4,656 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Harper's Art Index</title>
+<title>Publisher Directory</title>
 
 <style>
 :root {
-  --paper: #faf8f3;
-  --ink: #191919;
-  --muted: #68655f;
-  --line: #d1cec7;
-  --serif: Georgia, "Times New Roman", serif;
+  --ink: #222;
+  --muted: #777;
+  --line: #dedede;
+  --paper: #fff;
+  --soft: #f7f7f7;
 }
 
 * { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--serif);
-  -webkit-font-smoothing: antialiased;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
 }
 
 button, input, select { font: inherit; }
 button { cursor: pointer; }
-a { color: inherit; }
 
-.page {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 4% 90px;
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-/* HEADER */
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+header {
+  border-bottom: 1px solid var(--line);
+  padding: 23px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 35px;
-  padding: 36px 0 27px;
-  background: var(--paper);
-  border-bottom: 1px solid var(--ink);
-}
-
-.site-header::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -100vw;
-  right: -100vw;
-  background: var(--paper);
-  z-index: -1;
-  pointer-events: none;
-}
-
-.branding {
-  display: flex;
-  align-items: center;
   gap: 24px;
-  white-space: nowrap;
 }
 
-.harpers-logo {
-  display: block;
-  width: 175px;
-  height: auto;
-  object-fit: contain;
+.logo {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -1px;
 }
 
-.brand-divider {
-  width: 1px;
-  height: 39px;
-  background: var(--ink);
-  flex-shrink: 0;
-}
-
-.index-name {
-  font-size: 32px;
-  font-style: italic;
-  white-space: nowrap;
-}
-
-/* NAVIGATION */
-
-.navigation {
+nav {
   display: flex;
-  align-items: center;
+  gap: 27px;
   flex-wrap: wrap;
-  gap: 28px;
 }
 
-.nav-button {
-  position: relative;
-  border: 0;
-  background: transparent;
+nav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+}
+
+nav a.active {
   color: var(--ink);
-  padding: 12px 0;
-  font-size: 16px;
-  white-space: nowrap;
+  font-weight: bold;
 }
 
-.nav-button::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -4px;
-  height: 2px;
-  background: transparent;
-}
-
-.nav-button.active::after {
-  background: var(--ink);
-}
-
-.nav-button:hover { opacity: 0.6; }
-
-/* LAYOUT */
-
-.directory-layout {
+.layout {
   display: grid;
-  grid-template-columns: 238px minmax(0, 1fr);
-  gap: 45px;
-  margin-top: 50px;
+  grid-template-columns: 235px minmax(0, 1fr);
+  min-height: calc(100vh - 75px);
 }
 
-/* FILTERS */
-
-.filters {
+aside {
   border-right: 1px solid var(--line);
-  padding-right: 30px;
-  align-self: start;
+  padding: 30px 22px;
 }
 
-.filters-heading {
-  font-size: 26px;
-  margin: 0 0 18px;
-  font-weight: normal;
+.sidebar-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 11px;
+  margin-bottom: 28px;
 }
 
-.filter-section {
+.filter-group {
   border-top: 1px solid var(--line);
-  padding: 17px 0 18px;
+  padding: 20px 0;
 }
 
 .filter-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  text-align: left;
-  font-size: 13px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.filter-heading span:last-child {
-  font-size: 19px;
-  font-weight: normal;
+  font-weight: 700;
+  margin-bottom: 15px;
 }
 
 .filter-options {
   display: flex;
   flex-direction: column;
-  gap: 11px;
-  margin-top: 20px;
+  gap: 12px;
 }
 
-.filter-options[hidden] { display: none; }
-
-.filter-option {
+.filter-options label {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 13px;
-  line-height: 1.3;
+  align-items: center;
+  gap: 9px;
   cursor: pointer;
 }
 
-.filter-option input {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-  margin: 1px 0 0;
-  accent-color: var(--ink);
-}
+input[type="checkbox"] { accent-color: #222; }
 
-.clear-filters {
-  width: 100%;
-  padding: 9px 10px;
-  margin-top: 12px;
-  border: 1px solid var(--ink);
+.clear-button {
   background: transparent;
-  font-size: 12px;
-}
-
-.clear-filters:hover {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-/* SEARCH */
-
-.directory-main { min-width: 0; }
-
-.search-wrapper { position: relative; }
-
-.search-icon {
-  position: absolute;
-  left: 5px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 25px;
-  pointer-events: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
   color: var(--muted);
 }
 
-.search-input {
-  display: block;
+main {
+  min-width: 0;
+  padding: 32px 40px;
+}
+
+.page-title {
+  font-size: 27px;
+  letter-spacing: -.8px;
+  margin: 0 0 9px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.search {
   width: 100%;
-  height: 58px;
-  padding: 10px 20px 10px 42px;
-  border: none;
-  border-bottom: 1px solid #bdbab3;
-  border-radius: 0;
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 17px 18px;
+  font-size: 15px;
   outline: none;
-  background: transparent;
-  color: var(--ink);
-  font-size: 23px;
 }
 
-.search-input::placeholder {
-  color: #8a8781;
-  font-style: italic;
-  opacity: 1;
-}
+.search:focus { border-color: #555; }
 
-.search-input:focus {
-  border-bottom: 1px solid var(--ink);
-}
-
-/* TOOLBAR */
-
-.results-toolbar {
+.toolbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-top: 30px;
-  padding-bottom: 14px;
+  align-items: center;
   gap: 15px;
-  border-bottom: 1px solid var(--ink);
-  font-size: 13px;
+  flex-wrap: wrap;
+  padding: 20px 0 14px;
 }
+
+.count { color: var(--muted); }
 
 .toolbar-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 22px;
-  flex-wrap: wrap;
+  gap: 10px;
 }
 
-/* ARTIST VIEW TOGGLE */
-
-.artist-view-toggle {
-  display: flex;
-  align-items: center;
+.toolbar button,
+.toolbar select {
+  background: white;
   border: 1px solid var(--line);
+  padding: 9px 12px;
 }
 
-.artist-view-toggle[hidden] {
-  display: none;
+.table-wrap { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
-.view-option {
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  padding: 7px 12px;
-  font-size: 12px;
-  white-space: nowrap;
-  transition: background 0.15s ease;
-}
-
-.view-option + .view-option {
-  border-left: 1px solid var(--line);
-}
-
-.view-option.active {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.view-option:hover:not(.active) {
-  background: #ece9e2;
-}
-
-.sort-select {
-  border: 0;
-  background: transparent;
-  color: var(--ink);
-  outline: none;
-  cursor: pointer;
-  font-size: 13px;
-  padding: 3px 0;
-}
-
-.history-expand-all {
-  border: 0;
-  background: transparent;
-  padding: 3px 0;
-  color: var(--ink);
-  font-size: 13px;
-  white-space: nowrap;
-}
-
-.history-expand-all:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-/* RESULT ROWS */
-
-.result-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 185px 30px;
-  gap: 20px;
-  align-items: center;
-  min-height: 56px;
-  border-bottom: 1px solid var(--line);
-  text-decoration: none;
-  padding: 11px 0;
-}
-
-.result-row.artist-row {
-  grid-template-columns:
-    minmax(0, 1fr)
-    140px
-    160px
-    160px
-    minmax(190px, 280px);
-}
-
-.result-row[href]:hover .result-name {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.result-name {
-  font-size: 24px;
-  line-height: 1.2;
-  overflow-wrap: anywhere;
-}
-
-.result-specialty,
-.result-location,
-.result-agency {
-  font-size: 13px;
-  line-height: 1.35;
-  color: var(--muted);
-  overflow-wrap: anywhere;
-}
-
-.result-arrow {
-  font-size: 25px;
-  text-align: right;
-  line-height: 1;
-}
-
-/* MAGAZINE HISTORY */
-
-.result-history {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.5;
-  overflow-wrap: anywhere;
-}
-
-.history-label {
-  display: block;
-  font-size: 11px;
-  margin-bottom: 5px;
+th {
+  text-align: left;
   text-transform: uppercase;
+  letter-spacing: .6px;
+  font-size: 10px;
+  color: var(--muted);
+  padding: 15px 12px;
+  border-bottom: 1px solid var(--ink);
 }
 
-.history-record + .history-record {
-  margin-top: 8px;
+td {
+  padding: 17px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  overflow-wrap: anywhere;
 }
 
-.empty-message,
-.loading-message {
-  padding: 35px 0;
-  font-size: 15px;
+tbody tr:hover { background: var(--soft); }
+
+.publisher-name { font-weight: 700; }
+
+.size-tag {
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  text-transform: capitalize;
+}
+
+.details-row { background: var(--soft); }
+.details-row td { padding: 22px; }
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 20px;
+}
+
+.detail-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+
+.expand-button {
+  border: 0;
+  background: transparent;
+  font-size: 17px;
+}
+
+.empty {
+  padding: 45px;
+  text-align: center;
   color: var(--muted);
 }
 
-/* FOOTER */
-
-.site-footer {
-  margin-top: 80px;
-  border-top: 1px solid var(--line);
-  padding-top: 15px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 1200px) {
-  .site-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-
-  .navigation { gap: 23px; }
-
-  .result-row.artist-row {
-    grid-template-columns:
-      minmax(0, 1fr)
-      110px
-      120px
-      120px
-      minmax(180px, 250px);
-    gap: 12px;
-  }
-}
-
-@media (max-width: 900px) {
-  .directory-layout {
-    grid-template-columns: 190px minmax(0, 1fr);
-    gap: 25px;
-  }
-
-  .filters { padding-right: 20px; }
-
-  .result-row.artist-row {
-    grid-template-columns:
-      minmax(0, 1fr) 1fr;
-    gap: 8px 14px;
-  }
-
-  .artist-row .result-name {
-    grid-column: 1 / -1;
-  }
-
-  .artist-row .result-history {
-    grid-column: 1 / -1;
-  }
-
-  .toolbar-actions {
-    gap: 12px;
-  }
-}
-
-@media (max-width: 650px) {
-  .page { padding: 0 5% 60px; }
-
-  .site-header { padding: 20px 0 16px; }
-
-  .harpers-logo { width: 145px; }
-
-  .index-name { font-size: 27px; }
-
-  .branding { gap: 15px; }
-
-  .brand-divider { height: 32px; }
-
-  .navigation { gap: 17px; }
-
-  .nav-button { font-size: 14px; }
-
-  .directory-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    margin-top: 30px;
-  }
-
-  .filters {
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    padding-right: 0;
-    padding-bottom: 20px;
-    width: 100%;
-  }
-
-  .filters-heading { font-size: 22px; }
-
-  .filter-options {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  .filter-options[hidden] { display: none; }
-
-  .search-input {
-    height: 55px;
-    font-size: 17px;
-  }
-
-  .result-row {
-    grid-template-columns: minmax(0, 1fr) 24px;
-    gap: 6px 12px;
-  }
-
-  .result-name { font-size: 21px; }
-
-  .result-row:not(.artist-row) .result-name {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .result-row:not(.artist-row) .result-location {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .result-arrow {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .results-toolbar {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .toolbar-actions {
-    justify-content: flex-start;
-    gap: 12px;
-  }
-
-  .view-option {
-    font-size: 11px;
-    padding: 7px 9px;
-  }
+@media(max-width:800px) {
+  header { padding: 20px; flex-wrap: wrap; }
+  .layout { grid-template-columns: 1fr; }
+  aside { border-right: 0; border-bottom: 1px solid var(--line); }
+  main { padding: 25px 18px; }
+  table { min-width: 700px; }
+  .details-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 
 <body>
-<div class="page">
 
-<header class="site-header">
-  <div class="branding">
-    <img
-      src="Harper's_Magazine_logo.svg.webp"
-      alt="Harper's Magazine"
-      class="harpers-logo"
-    >
-    <div class="brand-divider"></div>
-    <div class="index-name">Art Index</div>
-  </div>
-
-  <nav class="navigation" aria-label="Directory sections">
-    <button class="nav-button"
-      data-category="Photo Agencies">
-      Photo Agencies
-    </button>
-
-    <button class="nav-button"
-      data-category="Illustration Agencies">
-      Illustration Agencies
-    </button>
-
-    <button class="nav-button"
-      data-category="Publishers">
-      Publishers
-    </button>
-
-    <button class="nav-button"
-      data-category="Archives">
-      Archives
-    </button>
-
-    <button class="nav-button active"
-      data-category="Artists">
-      Artists
-    </button>
+<header>
+  <div class="logo">DIRECTORY</div>
+  <nav>
+    <a href="#" class="active">Publishers</a>
+    <a href="#">Artists</a>
+    <a href="#">Agencies</a>
+    <a href="#">Publications</a>
   </nav>
 </header>
 
-<div class="directory-layout">
+<div class="layout">
 
-  <aside class="filters">
-    <h2 class="filters-heading">Filters</h2>
+<aside>
+  <div class="sidebar-title">Filters</div>
 
-    <div class="filter-section">
-      <button
-        class="filter-heading"
-        id="specialty-toggle"
-        aria-expanded="true"
-        aria-controls="specialty-options">
-        <span>Specialty</span>
-        <span id="specialty-symbol">−</span>
-      </button>
-      <div class="filter-options"
-        id="specialty-options"></div>
+  <div class="filter-group">
+    <div class="filter-heading">Publication Size</div>
+    <div class="filter-options">
+      <label><input type="checkbox" class="size-filter" value="small"> Small</label>
+      <label><input type="checkbox" class="size-filter" value="medium"> Medium</label>
+      <label><input type="checkbox" class="size-filter" value="large"> Large</label>
+      <label><input type="checkbox" class="size-filter" value="unknown"> Unknown</label>
     </div>
+  </div>
 
-    <div class="filter-section">
-      <button
-        class="filter-heading"
-        id="location-toggle"
-        aria-expanded="false"
-        aria-controls="location-options">
-        <span>Location</span>
-        <span id="location-symbol">+</span>
-      </button>
-      <div class="filter-options"
-        id="location-options"
-        hidden></div>
+  <div class="filter-group">
+    <div class="filter-heading">Location</div>
+    <div id="locationFilters" class="filter-options"></div>
+  </div>
+
+  <div class="filter-group">
+    <div class="filter-heading">Specialty</div>
+    <div id="specialtyFilters" class="filter-options"></div>
+  </div>
+
+  <button class="clear-button" id="clearFilters">Clear all filters</button>
+</aside>
+
+<main>
+  <h1 class="page-title">Publishers</h1>
+  <div class="subtitle">An independent directory of photography and art publishers.</div>
+
+  <input
+    type="search"
+    id="searchInput"
+    class="search"
+    placeholder="Search publishers, locations, specialties..."
+  >
+
+  <div class="toolbar">
+    <div class="count" id="resultCount">Loading publishers...</div>
+
+    <div class="toolbar-actions">
+      <button id="expandAll">Expand all</button>
+
+      <select id="sortSelect" aria-label="Sort publishers">
+        <option value="az">Name: A–Z</option>
+        <option value="za">Name: Z–A</option>
+        <option value="size-asc">Size: Small to Large</option>
+        <option value="size-desc">Size: Large to Small</option>
+      </select>
     </div>
+  </div>
 
-    <button class="clear-filters"
-      id="clear-filters">
-      Clear Filters
-    </button>
-  </aside>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:29%">Publisher</th>
+          <th style="width:25%">Location</th>
+          <th style="width:17%">Size</th>
+          <th style="width:23%">Specialty</th>
+          <th style="width:6%"></th>
+        </tr>
+      </thead>
+      <tbody id="publisherTable"></tbody>
+    </table>
+  </div>
 
-  <main class="directory-main">
-
-    <div class="search-wrapper">
-      <span class="search-icon"
-        aria-hidden="true">⌕</span>
-      <input
-        class="search-input"
-        type="search"
-        id="search-input"
-        placeholder="Search agencies, artists, specialties..."
-        aria-label="Search the directory">
-    </div>
-
-    <div class="results-toolbar">
-      <span id="results-count">Loading...</span>
-
-      <div class="toolbar-actions">
-
-        <!-- ALL ARTISTS / COMMISSIONED ARTISTS -->
-
-        <div
-          class="artist-view-toggle"
-          id="artist-view-toggle"
-          role="group"
-          aria-label="Artist directory view">
-
-          <button
-            type="button"
-            class="view-option active"
-            data-view="all"
-            aria-pressed="true">
-            All Artists
-          </button>
-
-          <button
-            type="button"
-            class="view-option"
-            data-view="commissioned"
-            aria-pressed="false">
-            Commissioned Artists
-          </button>
-
-        </div>
-
-        <!-- HISTORY TOGGLE -->
-
-        <button
-          id="history-expand-all"
-          class="history-expand-all"
-          type="button"
-          aria-pressed="false"
-          hidden>
-          Expand history +
-        </button>
-
-        <!-- SORT -->
-
-        <select
-          class="sort-select"
-          id="sort-select"
-          aria-label="Sort results">
-          <option value="az">Sort: A–Z</option>
-          <option value="za">Sort: Z–A</option>
-        </select>
-
-      </div>
-    </div>
-
-    <div id="results-list" aria-live="polite">
-      <div class="loading-message">
-        Loading directory...
-      </div>
-    </div>
-
-  </main>
-</div>
-
-<footer class="site-footer">
-  Harper's Art Index
-</footer>
+  <div class="empty" id="emptyMessage" hidden>No publishers match your filters.</div>
+</main>
 
 </div>
 
 <script>
+const CSV_FILE = "publishers_with_size.csv";
 
-/* GOOGLE SHEETS CONFIGURATION */
+let publishers = [];
+let expanded = new Set();
+let expandAll = false;
 
-const SHEET_ID =
-  "2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8";
-
-const SHEET_GIDS = {
-  "Photo Agencies": "0",
-  "Illustration Agencies": "1117426325",
-  "Publishers": "1313430076",
-  "Archives": "1061277045",
-  "Artists": "1721219062"
-};
-
-function sheetURL(gid) {
-  return (
-    "https://docs.google.com/spreadsheets/d/e/" +
-    SHEET_ID +
-    "/pub?single=true&output=csv&gid=" +
-    gid
-  );
-}
-
-/* STATE */
-
-const directoryData = {};
-
-let activeCategory = "Artists";
-let selectedSpecialties = new Set();
-let selectedLocations = new Set();
-let requestVersion = 0;
-let historyExpanded = false;
-
-/* NEW: ARTIST VIEW STATE */
-
-let artistView = "all";
-
-const searchInput =
-  document.getElementById("search-input");
-
-const sortSelect =
-  document.getElementById("sort-select");
-
-const historyExpandAll =
-  document.getElementById("history-expand-all");
-
-const artistViewToggle =
-  document.getElementById("artist-view-toggle");
-
-const resultsList =
-  document.getElementById("results-list");
-
-const resultsCount =
-  document.getElementById("results-count");
-
-const specialtyOptions =
-  document.getElementById("specialty-options");
-
-const locationOptions =
-  document.getElementById("location-options");
-
-/* CSV PARSER */
+const searchInput = document.getElementById("searchInput");
+const tableBody = document.getElementById("publisherTable");
+const resultCount = document.getElementById("resultCount");
+const sortSelect = document.getElementById("sortSelect");
+const emptyMessage = document.getElementById("emptyMessage");
 
 function parseCSV(text) {
   const rows = [];
   let row = [];
-  let field = "";
-  let insideQuotes = false;
+  let value = "";
+  let quoted = false;
 
   text = text.replace(/^\uFEFF/, "");
 
   for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    const next = text[i + 1];
+    const c = text[i];
 
-    if (char === '"') {
-      if (insideQuotes && next === '"') {
-        field += '"';
+    if (c === '"') {
+      if (quoted && text[i + 1] === '"') {
+        value += '"';
         i++;
       } else {
-        insideQuotes = !insideQuotes;
+        quoted = !quoted;
       }
-    } else if (char === "," && !insideQuotes) {
-      row.push(field);
-      field = "";
-    } else if (
-      (char === "\n" || char === "\r") &&
-      !insideQuotes
-    ) {
-      if (char === "\r" && next === "\n") {
-        i++;
-      }
-
-      row.push(field);
-      rows.push(row);
+    } else if (c === "," && !quoted) {
+      row.push(value);
+      value = "";
+    } else if ((c === "\n" || c === "\r") && !quoted) {
+      if (c === "\r" && text[i + 1] === "\n") i++;
+      row.push(value);
+      if (row.some(x => x.trim())) rows.push(row);
       row = [];
-      field = "";
+      value = "";
     } else {
-      field += char;
+      value += c;
     }
   }
 
-  if (field.length || row.length) {
-    row.push(field);
-    rows.push(row);
-  }
+  row.push(value);
+  if (row.some(x => x.trim())) rows.push(row);
 
-  if (!rows.length) return [];
+  const headers = rows.shift().map(x => x.trim());
 
-  const headers = rows.shift().map(
-    header => header.trim()
-  );
-
-  return rows
-    .filter(row => row.some(cell => cell.trim()))
-    .map(row => {
-      const item = {};
-
-      headers.forEach((header, index) => {
-        item[header] = (row[index] || "").trim();
-      });
-
-      return item;
+  return rows.map(values => {
+    const obj = {};
+    headers.forEach((header, i) => {
+      obj[header] = (values[i] || "").trim();
     });
-}
-
-/* LOAD DATA */
-
-async function loadCategory(category) {
-  if (directoryData[category]) {
-    return directoryData[category];
-  }
-
-  const gid = SHEET_GIDS[category];
-
-  const response = await fetch(
-    sheetURL(gid),
-    { cache: "no-store" }
-  );
-
-  if (!response.ok) {
-    throw new Error("Unable to load " + category);
-  }
-
-  const csvText = await response.text();
-  const data = parseCSV(csvText);
-
-  directoryData[category] = data;
-  return data;
-}
-
-/* FILTER HELPERS */
-
-function splitValues(value) {
-  return String(value || "")
-    .split(/[;,]/)
-    .map(value => value.trim())
-    .filter(Boolean);
-}
-
-function uniqueValues(items, field) {
-  const values = new Map();
-
-  items.forEach(item => {
-    splitValues(item[field]).forEach(value => {
-      const key = value.toLocaleLowerCase();
-
-      if (!values.has(key)) {
-        values.set(key, value);
-      }
-    });
+    return obj;
   });
-
-  return Array.from(values.values()).sort(
-    (a, b) => a.localeCompare(b)
-  );
 }
 
-function createFilterOption(value, type) {
-  const label = document.createElement("label");
-  label.className = "filter-option";
-
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.value = value;
-
-  const span = document.createElement("span");
-  span.textContent = value;
-
-  checkbox.addEventListener("change", () => {
-    const targetSet =
-      type === "specialty"
-        ? selectedSpecialties
-        : selectedLocations;
-
-    if (checkbox.checked) {
-      targetSet.add(value);
-    } else {
-      targetSet.delete(value);
-    }
-
-    renderResults();
-  });
-
-  label.appendChild(checkbox);
-  label.appendChild(span);
-  return label;
+function normalizeSize(value) {
+  const size = (value || "").trim().toLowerCase();
+  return ["small", "medium", "large"].includes(size)
+    ? size
+    : "unknown";
 }
 
-function renderFilters() {
-  const items = directoryData[activeCategory] || [];
-
-  specialtyOptions.replaceChildren();
-  locationOptions.replaceChildren();
-
-  const specialties = uniqueValues(items, "Specialty");
-  const locations = uniqueValues(items, "Location");
-
-  specialties.forEach(value => {
-    specialtyOptions.appendChild(
-      createFilterOption(value, "specialty")
-    );
-  });
-
-  locations.forEach(value => {
-    locationOptions.appendChild(
-      createFilterOption(value, "location")
-    );
-  });
-
-  if (!specialties.length) {
-    const message = document.createElement("span");
-    message.textContent = "No specialties available";
-    specialtyOptions.appendChild(message);
-  }
-
-  if (!locations.length) {
-    const message = document.createElement("span");
-    message.textContent = "No locations available";
-    locationOptions.appendChild(message);
-  }
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[c]);
 }
 
-/* SEARCH AND SORT */
-
-function getFilteredItems() {
-  const items = directoryData[activeCategory] || [];
-  const query = searchInput.value.trim().toLowerCase();
-
-  let filtered = items.filter(item => {
-
-    /*
-      COMMISSIONED ARTISTS FILTER
-
-      An artist is considered commissioned if
-      the History column contains at least
-      one nonempty record.
-
-      No additional CSV column is required.
-    */
-
-    if (
-      activeCategory === "Artists" &&
-      artistView === "commissioned" &&
-      parseHistory(item.History).length === 0
-    ) {
-      return false;
-    }
-
-    const searchableText = [
-      item.Name,
-      item.Specialty,
-      item.Location,
-      item.Description,
-      item.Agency,
-      item.History,
-      item.Tags,
-      item.Notes
-    ].join(" ").toLowerCase();
-
-    if (query && !searchableText.includes(query)) {
-      return false;
-    }
-
-    if (selectedSpecialties.size) {
-      const itemSpecialties = splitValues(
-        item.Specialty
-      ).map(value => value.toLowerCase());
-
-      const matchesSpecialty = Array.from(
-        selectedSpecialties
-      ).some(value =>
-        itemSpecialties.includes(value.toLowerCase())
-      );
-
-      if (!matchesSpecialty) return false;
-    }
-
-    if (selectedLocations.size) {
-      const itemLocations = splitValues(
-        item.Location
-      ).map(value => value.toLowerCase());
-
-      const matchesLocation = Array.from(
-        selectedLocations
-      ).some(value =>
-        itemLocations.includes(value.toLowerCase())
-      );
-
-      if (!matchesLocation) return false;
-    }
-
-    return true;
-  });
-
-  filtered.sort((a, b) => {
-    const comparison = (a.Name || "").localeCompare(
-      b.Name || "",
-      undefined,
-      {
-        sensitivity: "base",
-        numeric: true
-      }
-    );
-
-    return sortSelect.value === "za"
-      ? -comparison
-      : comparison;
-  });
-
-  return filtered;
-}
-
-/* SAFE WEBSITE LINKS */
-
-function safeWebsite(value) {
-  const raw = String(value || "").trim();
-
-  if (!raw) return "";
+function safeURL(value) {
+  const url = String(value || "").trim();
+  if (!url) return "";
 
   try {
-    const candidate = /^https?:\/\//i.test(raw)
-      ? raw
-      : "https://" + raw;
-
-    const url = new URL(candidate);
-
-    if (
-      url.protocol !== "https:" &&
-      url.protocol !== "http:"
-    ) {
-      return "";
-    }
-
-    if (!url.hostname || !url.hostname.includes(".")) {
-      return "";
-    }
-
-    return url.href;
+    const parsed = new URL(
+      /^https?:\/\//i.test(url) ? url : "https://" + url
+    );
+    return ["http:", "https:"].includes(parsed.protocol)
+      ? parsed.href
+      : "";
   } catch {
     return "";
   }
 }
 
-/* MAGAZINE HISTORY */
+function createFilters(id, values, field) {
+  const container = document.getElementById(id);
+  container.innerHTML = "";
 
-/*
-  Converts:
-  2024-01 | miscellany | Farwell
+  [...new Set(values.filter(Boolean))]
+    .sort((a,b) => a.localeCompare(b))
+    .forEach(value => {
+      const label = document.createElement("label");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.value = value;
+      checkbox.dataset.field = field;
+      checkbox.addEventListener("change", render);
 
-  To:
-  January 2024 | miscellany | Farwell
-
-  Also supports:
-  01-2024
-  January 2024
-*/
-
-function formatHistoryDate(dateText) {
-  const raw = String(dateText || "").trim();
-
-  const months = [
-    "January", "February", "March", "April",
-    "May", "June", "July", "August",
-    "September", "October", "November", "December"
-  ];
-
-  let match = raw.match(/^(\d{4})-(\d{1,2})$/);
-
-  if (match) {
-    const year = match[1];
-    const month = Number(match[2]);
-
-    if (month >= 1 && month <= 12) {
-      return months[month - 1] + " " + year;
-    }
-  }
-
-  match = raw.match(/^(\d{1,2})-(\d{4})$/);
-
-  if (match) {
-    const month = Number(match[1]);
-    const year = match[2];
-
-    if (month >= 1 && month <= 12) {
-      return months[month - 1] + " " + year;
-    }
-  }
-
-  return raw;
-}
-
-function parseHistory(value) {
-  return String(value || "")
-    .split(";")
-    .map(record => record.trim())
-    .filter(Boolean)
-    .sort((a, b) => {
-      const dateA = a.split("|")[0].trim();
-      const dateB = b.split("|")[0].trim();
-
-      const getDateKey = value => {
-        let match = value.match(/^(\d{4})-(\d{1,2})$/);
-
-        if (match) {
-          return Number(match[1]) * 100 +
-            Number(match[2]);
-        }
-
-        match = value.match(/^(\d{1,2})-(\d{4})$/);
-
-        if (match) {
-          return Number(match[2]) * 100 +
-            Number(match[1]);
-        }
-
-        const parsed = Date.parse("1 " + value);
-
-        if (!Number.isNaN(parsed)) {
-          const date = new Date(parsed);
-
-          return date.getFullYear() * 100 +
-            date.getMonth() + 1;
-        }
-
-        return 0;
-      };
-
-      return getDateKey(dateB) - getDateKey(dateA);
+      label.append(checkbox, document.createTextNode(" " + value));
+      container.appendChild(label);
     });
 }
 
-function formatHistoryRecord(record) {
-  const parts = String(record)
-    .split("|")
-    .map(part => part.trim());
-
-  if (!parts.length) return "";
-
-  parts[0] = formatHistoryDate(parts[0]);
-
-  return parts.join(" | ");
+function selectedValues(selector) {
+  return [...document.querySelectorAll(selector + ":checked")]
+    .map(input => input.value);
 }
 
-/* RESULT ROWS */
+function matchesMultiValue(value, selected) {
+  if (!selected.length) return true;
 
-function createResultRow(item) {
-  const isArtist = activeCategory === "Artists";
-  const website = safeWebsite(item.Website);
+  const parts = String(value || "")
+    .split(/[;,]/)
+    .map(s => s.trim().toLowerCase());
 
-  const row = document.createElement(
-    website ? "a" : "div"
+  return selected.some(s => parts.includes(s.toLowerCase()));
+}
+
+function getFilteredPublishers() {
+  const query = searchInput.value.trim().toLowerCase();
+  const sizes = selectedValues(".size-filter");
+  const locations = selectedValues(
+    '#locationFilters input[type="checkbox"]'
+  );
+  const specialties = selectedValues(
+    '#specialtyFilters input[type="checkbox"]'
   );
 
-  row.className =
-    "result-row" + (isArtist ? " artist-row" : "");
+  let results = publishers.filter(p => {
+    const searchable = Object.values(p).join(" ").toLowerCase();
 
-  if (website) {
-    row.href = website;
-    row.target = "_blank";
-    row.rel = "noopener noreferrer";
-  }
+    if (query && !searchable.includes(query)) return false;
 
-  const addText = (className, value) => {
-    const span = document.createElement("span");
-    span.className = className;
-    span.textContent = value || "";
-    row.appendChild(span);
-    return span;
-  };
-
-  addText("result-name", item.Name || "Untitled");
-
-  if (isArtist) {
-    addText(
-      "result-specialty",
-      (item.Specialty || "").replace(/;\s*/g, ", ")
-    );
-  }
-
-  addText("result-location", item.Location);
-
-  if (isArtist) {
-    addText("result-agency", item.Agency);
-
-    const historyCell = document.createElement("div");
-    historyCell.className = "result-history";
-
-    const history = parseHistory(item.History);
-
-    if (history.length) {
-      const label = document.createElement("span");
-      label.className = "history-label";
-
-      label.textContent = historyExpanded
-        ? "MAGAZINE HISTORY"
-        : "LATEST COMMISSION";
-
-      historyCell.appendChild(label);
-
-      const visibleHistory = historyExpanded
-        ? history
-        : history.slice(0, 1);
-
-      visibleHistory.forEach(record => {
-        const recordDiv = document.createElement("div");
-        recordDiv.className = "history-record";
-
-        recordDiv.textContent =
-          formatHistoryRecord(record);
-
-        historyCell.appendChild(recordDiv);
-      });
+    if (sizes.length && !sizes.includes(normalizeSize(p.Size))) {
+      return false;
     }
 
-    row.appendChild(historyCell);
-  } else {
-    addText("result-arrow", website ? "↗" : "");
+    if (!matchesMultiValue(p.Location, locations)) return false;
+    if (!matchesMultiValue(p.Specialty, specialties)) return false;
+
+    return true;
+  });
+
+  const order = { small: 0, medium: 1, large: 2, unknown: 3 };
+
+  results.sort((a,b) => {
+    const mode = sortSelect.value;
+
+    if (mode === "za") {
+      return b.Name.localeCompare(a.Name);
+    }
+
+    if (mode === "size-asc") {
+      return order[normalizeSize(a.Size)] -
+        order[normalizeSize(b.Size)] ||
+        a.Name.localeCompare(b.Name);
+    }
+
+    if (mode === "size-desc") {
+      const reverse = { large: 0, medium: 1, small: 2, unknown: 3 };
+      return reverse[normalizeSize(a.Size)] -
+        reverse[normalizeSize(b.Size)] ||
+        a.Name.localeCompare(b.Name);
+    }
+
+    return a.Name.localeCompare(b.Name);
+  });
+
+  return results;
+}
+
+function detail(label, value, isLink = false) {
+  if (!value) return "";
+
+  let content = escapeHTML(value);
+
+  if (isLink) {
+    const url = safeURL(value);
+    if (url) {
+      content = `<a href="${escapeHTML(url)}"
+        target="_blank" rel="noopener noreferrer">
+        ${escapeHTML(value)}</a>`;
+    }
   }
 
-  return row;
+  return `<div>
+    <div class="detail-label">${escapeHTML(label)}</div>
+    <div>${content}</div>
+  </div>`;
 }
 
-/* ARTIST VIEW CONTROLS */
+function render() {
+  const results = getFilteredPublishers();
 
-function updateArtistViewToggle() {
-  const isArtist = activeCategory === "Artists";
+  resultCount.textContent =
+    `${results.length} of ${publishers.length} publishers`;
 
-  artistViewToggle.hidden = !isArtist;
+  tableBody.innerHTML = "";
+  emptyMessage.hidden = results.length !== 0;
 
-  document.querySelectorAll(".view-option")
-    .forEach(button => {
-      const active =
-        button.dataset.view === artistView;
+  results.forEach(p => {
+    const key = p._id;
+    const isExpanded = expandAll || expanded.has(key);
+    const size = normalizeSize(p.Size);
 
-      button.classList.toggle("active", active);
-      button.setAttribute(
-        "aria-pressed",
-        String(active)
-      );
-    });
-}
+    const row = document.createElement("tr");
 
-/* RENDER RESULTS */
+    row.innerHTML = `
+      <td class="publisher-name">${escapeHTML(p.Name)}</td>
+      <td>${escapeHTML(p.Location)}</td>
+      <td><span class="size-tag">${escapeHTML(size)}</span></td>
+      <td>${escapeHTML(p.Specialty)}</td>
+      <td>
+        <button class="expand-button"
+          aria-label="${isExpanded ? "Collapse" : "Expand"} details"
+          aria-expanded="${isExpanded}">
+          ${isExpanded ? "−" : "+"}
+        </button>
+      </td>
+    `;
 
-function renderResults() {
-  updateArtistViewToggle();
-
-  historyExpandAll.hidden =
-    activeCategory !== "Artists";
-
-  historyExpandAll.textContent = historyExpanded
-    ? "Collapse history −"
-    : "Expand history +";
-
-  historyExpandAll.setAttribute(
-    "aria-pressed",
-    String(historyExpanded)
-  );
-
-  const items = getFilteredItems();
-
-  resultsCount.textContent =
-    items.length +
-    (items.length === 1 ? " result" : " results");
-
-  resultsList.replaceChildren();
-
-  if (!items.length) {
-    const empty = document.createElement("div");
-    empty.className = "empty-message";
-    empty.textContent = "No results found.";
-    resultsList.appendChild(empty);
-    return;
-  }
-
-  const fragment = document.createDocumentFragment();
-
-  items.forEach(item => {
-    fragment.appendChild(createResultRow(item));
-  });
-
-  resultsList.appendChild(fragment);
-}
-
-/* CATEGORY NAVIGATION */
-
-async function switchCategory(category) {
-  const version = ++requestVersion;
-  activeCategory = category;
-
-  selectedSpecialties.clear();
-  selectedLocations.clear();
-
-  searchInput.value = "";
-  sortSelect.value = "az";
-
-  document.querySelectorAll(".nav-button")
-    .forEach(button => {
-      const active =
-        button.dataset.category === category;
-
-      button.classList.toggle("active", active);
-
-      if (active) {
-        button.setAttribute("aria-current", "page");
-      } else {
-        button.removeAttribute("aria-current");
-      }
+    row.querySelector("button").addEventListener("click", () => {
+      if (expanded.has(key)) expanded.delete(key);
+      else expanded.add(key);
+      expandAll = false;
+      document.getElementById("expandAll").textContent = "Expand all";
+      render();
     });
 
-  updateArtistViewToggle();
+    tableBody.appendChild(row);
 
-  historyExpandAll.hidden =
-    category !== "Artists";
+    if (isExpanded) {
+      const detailsRow = document.createElement("tr");
+      detailsRow.className = "details-row";
 
-  resultsList.innerHTML =
-    '<div class="loading-message">Loading directory...</div>';
+      detailsRow.innerHTML = `
+        <td colspan="5">
+          <div class="details-grid">
+            ${detail("Website", p.Website, true)}
+            ${detail("Contact", p.Contact)}
+            ${detail("Description", p.Description)}
+            ${detail("Tags", p.Tags)}
+            ${detail("Notes", p.Notes)}
+          </div>
+        </td>
+      `;
 
-  resultsCount.textContent = "Loading...";
-
-  try {
-    await loadCategory(category);
-
-    if (version !== requestVersion) return;
-
-    renderFilters();
-    renderResults();
-  } catch (error) {
-    if (version !== requestVersion) return;
-
-    console.error(error);
-
-    resultsCount.textContent = "Unavailable";
-
-    resultsList.innerHTML =
-      '<div class="empty-message">' +
-      'Unable to load this section. ' +
-      'Check the published Google Sheets CSV.' +
-      '</div>';
-  }
-}
-
-/* NAVIGATION EVENTS */
-
-document.querySelectorAll(".nav-button")
-  .forEach(button => {
-    button.addEventListener("click", () => {
-      switchCategory(button.dataset.category);
-    });
-  });
-
-/* ARTIST VIEW TOGGLE EVENTS */
-
-document.querySelectorAll(".view-option")
-  .forEach(button => {
-    button.addEventListener("click", () => {
-      artistView = button.dataset.view;
-
-      updateArtistViewToggle();
-      renderResults();
-    });
-  });
-
-/* COLLAPSIBLE FILTERS */
-
-function setupFilterToggle(
-  toggleId,
-  optionsId,
-  symbolId
-) {
-  const toggle = document.getElementById(toggleId);
-  const options = document.getElementById(optionsId);
-  const symbol = document.getElementById(symbolId);
-
-  toggle.addEventListener("click", () => {
-    const expanded =
-      toggle.getAttribute("aria-expanded") === "true";
-
-    toggle.setAttribute(
-      "aria-expanded",
-      String(!expanded)
-    );
-
-    options.hidden = expanded;
-    symbol.textContent = expanded ? "+" : "−";
+      tableBody.appendChild(detailsRow);
+    }
   });
 }
 
-setupFilterToggle(
-  "specialty-toggle",
-  "specialty-options",
-  "specialty-symbol"
-);
+searchInput.addEventListener("input", render);
+sortSelect.addEventListener("change", render);
 
-setupFilterToggle(
-  "location-toggle",
-  "location-options",
-  "location-symbol"
-);
-
-/* CLEAR FILTERS */
-
-document.getElementById("clear-filters")
-  .addEventListener("click", () => {
-    selectedSpecialties.clear();
-    selectedLocations.clear();
-    searchInput.value = "";
-
-    document.querySelectorAll(
-      '.filter-options input[type="checkbox"]'
-    ).forEach(checkbox => {
-      checkbox.checked = false;
-    });
-
-    renderResults();
-  });
-
-/* SEARCH AND SORT EVENTS */
-
-searchInput.addEventListener("input", renderResults);
-sortSelect.addEventListener("change", renderResults);
-
-/* EXPAND / COLLAPSE HISTORY */
-
-historyExpandAll.addEventListener("click", () => {
-  historyExpanded = !historyExpanded;
-  renderResults();
+document.querySelectorAll(".size-filter").forEach(input => {
+  input.addEventListener("change", render);
 });
 
-/* INITIAL LOAD */
+document.getElementById("clearFilters").addEventListener("click", () => {
+  document.querySelectorAll('input[type="checkbox"]')
+    .forEach(input => input.checked = false);
 
-switchCategory("Artists");
+  searchInput.value = "";
+  render();
+});
 
+document.getElementById("expandAll").addEventListener("click", e => {
+  expandAll = !expandAll;
+  expanded.clear();
+  e.target.textContent = expandAll ? "Collapse all" : "Expand all";
+  render();
+});
+
+async function loadPublishers() {
+  try {
+    const response = await fetch(CSV_FILE, { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error("Could not load " + CSV_FILE);
+    }
+
+    const csv = await response.text();
+
+    publishers = parseCSV(csv)
+      .filter(p => p.Name)
+      .map((p, index) => ({ ...p, _id: index }));
+
+    const locations = publishers.flatMap(p =>
+      (p.Location || "").split(";").map(x => x.trim())
+    );
+
+    const specialties = publishers.flatMap(p =>
+      (p.Specialty || "").split(";").map(x => x.trim())
+    );
+
+    createFilters("locationFilters", locations, "Location");
+    createFilters("specialtyFilters", specialties, "Specialty");
+
+    render();
+
+  } catch (error) {
+    console.error(error);
+    resultCount.textContent = "Unable to load publishers";
+    emptyMessage.hidden = false;
+    emptyMessage.textContent =
+      "Could not load the CSV. Check the filename and make sure the site is running through a web server.";
+  }
+}
+
+loadPublishers();
 </script>
+
 </body>
 </html>
