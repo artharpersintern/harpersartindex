@@ -2,1209 +2,979 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Harper's Art Index</title>
-
-  <style>
-    :root {
-      --paper: #faf8f3;
-      --ink: #191919;
-      --muted: #68655f;
-      --line: #d1cec7;
-      --serif: Georgia, "Times New Roman", serif;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--serif);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    a {
-      color: inherit;
-    }
-
-    .page {
-      max-width: 1600px;
-      margin: 0 auto;
-      padding: 36px 4% 90px;
-    }
-
-    /* HEADER */
-
-    .site-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 35px;
-      border-bottom: 1px solid var(--ink);
-      padding-bottom: 27px;
-    }
-
-    .branding {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      white-space: nowrap;
-    }
-
-    .harpers {
-      font-size: 34px;
-      font-weight: bold;
-      letter-spacing: -2px;
-      font-variant: small-caps;
-      line-height: 1;
-    }
-
-    .brand-divider {
-      width: 1px;
-      height: 39px;
-      background: var(--ink);
-    }
-
-    .index-name {
-      font-size: 32px;
-      font-style: italic;
-      white-space: nowrap;
-    }
-
-    .navigation {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 28px;
-    }
-
-    .nav-button {
-      position: relative;
-      border: 0;
-      background: transparent;
-      color: var(--ink);
-      padding: 12px 0;
-      font-size: 16px;
-      white-space: nowrap;
-    }
-
-    .nav-button::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -4px;
-      height: 2px;
-      background: transparent;
-    }
-
-    .nav-button.active::after {
-      background: var(--ink);
-    }
-
-    .nav-button:hover {
-      opacity: .6;
-    }
-
-    /* MAIN LAYOUT */
-
-    .directory-layout {
-      display: grid;
-      grid-template-columns: 238px minmax(0, 1fr);
-      gap: 45px;
-      margin-top: 50px;
-    }
-
-    /* FILTERS */
-
-    .filters {
-      border-right: 1px solid var(--line);
-      padding-right: 30px;
-      align-self: start;
-    }
-
-    .filters-heading {
-      font-size: 26px;
-      margin: 0 0 18px;
-      font-weight: normal;
-    }
-
-    .filter-section {
-      border-top: 1px solid var(--line);
-      padding: 17px 0 18px;
-    }
-
-    .filter-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      text-align: left;
-      font-size: 13px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: .25px;
-    }
-
-    .filter-heading span:last-child {
-      font-size: 19px;
-      font-weight: normal;
-    }
-
-    .filter-options {
-      display: flex;
-      flex-direction: column;
-      gap: 11px;
-      margin-top: 20px;
-    }
-
-    .filter-options[hidden] {
-      display: none;
-    }
-
-    .filter-option {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 13px;
-      line-height: 1.3;
-      cursor: pointer;
-    }
-
-    .filter-option input {
-      width: 14px;
-      height: 14px;
-      flex-shrink: 0;
-      margin: 1px 0 0;
-      accent-color: var(--ink);
-    }
-
-    .clear-filters {
-      width: 100%;
-      padding: 9px 10px;
-      margin-top: 12px;
-      border: 1px solid var(--ink);
-      background: transparent;
-      font-size: 12px;
-    }
-
-    .clear-filters:hover {
-      background: var(--ink);
-      color: var(--paper);
-    }
-
-    /* SEARCH */
-
-    .directory-main {
-      min-width: 0;
-    }
-
-    .search-wrapper {
-      position: relative;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 23px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 28px;
-      line-height: 1;
-      pointer-events: none;
-    }
-
-    .search-input {
-      display: block;
-      width: 100%;
-      height: 67px;
-      padding: 15px 20px 15px 56px;
-      border: 1px solid var(--ink);
-      border-radius: 0;
-      outline: none;
-      background: transparent;
-      color: var(--ink);
-      font-size: 23px;
-    }
-
-    .search-input::placeholder {
-      color: #77736e;
-      font-style: italic;
-      opacity: 1;
-    }
-
-    .search-input:focus {
-      outline: 1px solid var(--ink);
-      outline-offset: 2px;
-    }
-
-    /* RESULTS HEADER */
-
-    .results-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 30px;
-      padding-bottom: 14px;
-      gap: 15px;
-      border-bottom: 1px solid var(--ink);
-      font-size: 13px;
-    }
-
-    .sort-select {
-      border: 0;
-      background: transparent;
-      color: var(--ink);
-      outline: none;
-      cursor: pointer;
-      font-size: 13px;
-      padding: 3px 0;
-    }
-
-    /* RESULT ROWS */
-
-    .result-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 185px 30px;
-      gap: 20px;
-      align-items: center;
-      min-height: 56px;
-      border-bottom: 1px solid var(--line);
-      text-decoration: none;
-      padding: 11px 0;
-    }
-
-    .result-row.artist-row {
-      grid-template-columns:
-        minmax(0, 1fr)
-        155px
-        185px
-        30px;
-    }
-
-    .result-row:hover .result-name {
-      text-decoration: underline;
-      text-underline-offset: 4px;
-    }
-
-    .result-name {
-      font-size: 24px;
-      line-height: 1.2;
-      overflow-wrap: anywhere;
-    }
-
-    .result-specialty,
-    .result-location {
-      font-size: 13px;
-      line-height: 1.35;
-      color: var(--muted);
-      overflow-wrap: anywhere;
-    }
-
-    .result-arrow {
-      font-size: 25px;
-      font-weight: normal;
-      text-align: right;
-      line-height: 1;
-    }
-
-    .result-row:not([href]) {
-      cursor: default;
-    }
-
-    .result-row:not([href]):hover .result-name {
-      text-decoration: none;
-    }
-
-    .empty-message {
-      padding: 35px 0;
-      font-size: 17px;
-      color: var(--muted);
-    }
-
-    .loading-message {
-      padding: 35px 0;
-      font-size: 15px;
-      color: var(--muted);
-    }
-
-    /* FOOTER */
-
-    .site-footer {
-      margin-top: 80px;
-      border-top: 1px solid var(--line);
-      padding-top: 15px;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* RESPONSIVE */
-
-    @media (max-width: 1100px) {
-      .site-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .navigation {
-        gap: 23px;
-      }
-    }
-
-    @media (max-width: 850px) {
-      .directory-layout {
-        grid-template-columns: 190px minmax(0, 1fr);
-        gap: 25px;
-      }
-
-      .filters {
-        padding-right: 20px;
-      }
-
-      .result-row.artist-row {
-        grid-template-columns:
-          minmax(0, 1fr)
-          120px
-          120px
-          24px;
-        gap: 12px;
-      }
-
-      .result-row {
-        grid-template-columns:
-          minmax(0, 1fr)
-          140px
-          24px;
-        gap: 12px;
-      }
-
-      .result-name {
-        font-size: 21px;
-      }
-    }
-
-    @media (max-width: 650px) {
-      .page {
-        padding: 25px 5% 60px;
-      }
-
-      .harpers {
-        font-size: 28px;
-      }
-
-      .index-name {
-        font-size: 27px;
-      }
-
-      .branding {
-        gap: 15px;
-      }
-
-      .brand-divider {
-        height: 32px;
-      }
-
-      .navigation {
-        gap: 17px;
-      }
-
-      .nav-button {
-        font-size: 14px;
-      }
-
-      .directory-layout {
-        display: flex;
-        flex-direction: column;
-        gap: 28px;
-        margin-top: 30px;
-      }
-
-      .filters {
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-        padding-right: 0;
-        padding-bottom: 20px;
-        width: 100%;
-      }
-
-      .filters-heading {
-        font-size: 22px;
-      }
-
-      .filter-options {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-      }
-
-      .filter-options[hidden] {
-        display: none;
-      }
-
-      .search-input {
-        height: 60px;
-        font-size: 17px;
-      }
-
-      .result-row,
-      .result-row.artist-row {
-        grid-template-columns: minmax(0, 1fr) 24px;
-        gap: 6px 12px;
-      }
-
-      .result-name {
-        font-size: 21px;
-        grid-column: 1;
-        grid-row: 1;
-      }
-
-      .result-specialty {
-        grid-column: 1;
-        grid-row: 2;
-      }
-
-      .result-location {
-        grid-column: 1;
-        grid-row: 3;
-      }
-
-      .result-row:not(.artist-row) .result-location {
-        grid-row: 2;
-      }
-
-      .result-arrow {
-        grid-column: 2;
-        grid-row: 1;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harper's Art Index</title>
+
+<style>
+:root {
+  --paper: #faf8f3;
+  --ink: #191919;
+  --muted: #68655f;
+  --line: #d1cec7;
+  --serif: Georgia, "Times New Roman", serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+
+.page {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 36px 4% 90px;
+}
+
+/* HEADER */
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 35px;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 27px;
+}
+
+.branding {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  white-space: nowrap;
+}
+
+.harpers-logo {
+  display: block;
+  width: 175px;
+  height: auto;
+  object-fit: contain;
+}
+
+.brand-divider {
+  width: 1px;
+  height: 39px;
+  background: var(--ink);
+  flex-shrink: 0;
+}
+
+.index-name {
+  font-size: 32px;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.nav-button {
+  position: relative;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 12px 0;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.nav-button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  background: transparent;
+}
+
+.nav-button.active::after { background: var(--ink); }
+.nav-button:hover { opacity: .6; }
+
+/* LAYOUT */
+
+.directory-layout {
+  display: grid;
+  grid-template-columns: 238px minmax(0, 1fr);
+  gap: 45px;
+  margin-top: 50px;
+}
+
+/* FILTERS */
+
+.filters {
+  border-right: 1px solid var(--line);
+  padding-right: 30px;
+  align-self: start;
+}
+
+.filters-heading {
+  font-size: 26px;
+  margin: 0 0 18px;
+  font-weight: normal;
+}
+
+.filter-section {
+  border-top: 1px solid var(--line);
+  padding: 17px 0 18px;
+}
+
+.filter-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: .25px;
+}
+
+.filter-heading span:last-child {
+  font-size: 19px;
+  font-weight: normal;
+}
+
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-top: 20px;
+}
+
+.filter-options[hidden] { display: none; }
+
+.filter-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.filter-option input {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin: 1px 0 0;
+  accent-color: var(--ink);
+}
+
+.clear-filters {
+  width: 100%;
+  padding: 9px 10px;
+  margin-top: 12px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  font-size: 12px;
+}
+
+.clear-filters:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* SEARCH */
+
+.directory-main { min-width: 0; }
+
+.search-wrapper { position: relative; }
+
+.search-icon {
+  position: absolute;
+  left: 23px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 28px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.search-input {
+  display: block;
+  width: 100%;
+  height: 67px;
+  padding: 15px 20px 15px 56px;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: 23px;
+}
+
+.search-input::placeholder {
+  color: #77736e;
+  font-style: italic;
+  opacity: 1;
+}
+
+.search-input:focus {
+  outline: 1px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* RESULTS */
+
+.results-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding-bottom: 14px;
+  gap: 15px;
+  border-bottom: 1px solid var(--ink);
+  font-size: 13px;
+}
+
+.sort-select {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 3px 0;
+}
+
+.result-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 185px 30px;
+  gap: 20px;
+  align-items: center;
+  min-height: 56px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  padding: 11px 0;
+}
+
+.result-row.artist-row {
+  grid-template-columns:
+    minmax(0, 1fr) 155px 185px 30px;
+}
+
+.result-row[href]:hover .result-name {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.result-name {
+  font-size: 24px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.result-specialty,
+.result-location {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.result-arrow {
+  font-size: 25px;
+  text-align: right;
+  line-height: 1;
+}
+
+.empty-message,
+.loading-message {
+  padding: 35px 0;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.site-footer {
+  margin-top: 80px;
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .navigation { gap: 23px; }
+}
+
+@media (max-width: 850px) {
+  .directory-layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 25px;
+  }
+  .filters { padding-right: 20px; }
+  .result-row.artist-row {
+    grid-template-columns: minmax(0, 1fr) 120px 120px 24px;
+    gap: 12px;
+  }
+  .result-row {
+    grid-template-columns: minmax(0, 1fr) 140px 24px;
+    gap: 12px;
+  }
+  .result-name { font-size: 21px; }
+}
+
+@media (max-width: 650px) {
+  .page { padding: 25px 5% 60px; }
+  .harpers-logo { width: 145px; }
+  .index-name { font-size: 27px; }
+  .branding { gap: 15px; }
+  .brand-divider { height: 32px; }
+  .navigation { gap: 17px; }
+  .nav-button { font-size: 14px; }
+
+  .directory-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: 30px;
+  }
+
+  .filters {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding-right: 0;
+    padding-bottom: 20px;
+    width: 100%;
+  }
+
+  .filters-heading { font-size: 22px; }
+
+  .filter-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .filter-options[hidden] { display: none; }
+  .search-input { height: 60px; font-size: 17px; }
+
+  .result-row,
+  .result-row.artist-row {
+    grid-template-columns: minmax(0, 1fr) 24px;
+    gap: 6px 12px;
+  }
+
+  .result-name {
+    font-size: 21px;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .result-specialty {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .result-location {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .result-row:not(.artist-row) .result-location {
+    grid-row: 2;
+  }
+
+  .result-arrow {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+</style>
 </head>
 
 <body>
-  <div class="page">
+<div class="page">
 
-    <header class="site-header">
-      <div class="branding">
-        <div class="harpers">Harper's</div>
-        <div class="brand-divider"></div>
-        <div class="index-name">Art Index</div>
-      </div>
+  <header class="site-header">
+    <div class="branding">
 
-      <nav class="navigation" id="navigation" aria-label="Directory sections">
-        <button class="nav-button" data-category="Photo Agencies">Photo Agencies</button>
-        <button class="nav-button" data-category="Illustration Agencies">Illustration Agencies</button>
-        <button class="nav-button" data-category="Publishers">Publishers</button>
-        <button class="nav-button" data-category="Archives">Archives</button>
-        <button class="nav-button active" data-category="Artists">Artists</button>
-      </nav>
-    </header>
+      <!-- EXACT UPLOADED LOGO FILENAME -->
+      <img
+        src="Harper's_Magazine_logo.svg.webp"
+        alt="Harper's Magazine"
+        class="harpers-logo"
+      >
 
-    <div class="directory-layout">
-
-      <aside class="filters">
-        <h2 class="filters-heading">Filters</h2>
-
-        <div class="filter-section">
-          <button
-            class="filter-heading"
-            id="specialty-toggle"
-            aria-expanded="true"
-            aria-controls="specialty-options"
-          >
-            <span>Specialty</span>
-            <span id="specialty-symbol">−</span>
-          </button>
-
-          <div class="filter-options" id="specialty-options"></div>
-        </div>
-
-        <div class="filter-section">
-          <button
-            class="filter-heading"
-            id="location-toggle"
-            aria-expanded="false"
-            aria-controls="location-options"
-          >
-            <span>Location</span>
-            <span id="location-symbol">+</span>
-          </button>
-
-          <div class="filter-options" id="location-options" hidden></div>
-        </div>
-
-        <button class="clear-filters" id="clear-filters">
-          Clear Filters
-        </button>
-      </aside>
-
-      <main class="directory-main">
-
-        <div class="search-wrapper">
-          <span class="search-icon" aria-hidden="true">⌕</span>
-
-          <input
-            class="search-input"
-            type="search"
-            id="search-input"
-            placeholder="Search agencies, artists, specialties..."
-            aria-label="Search the directory"
-          >
-        </div>
-
-        <div class="results-toolbar">
-          <span id="results-count">Loading...</span>
-
-          <select class="sort-select" id="sort-select" aria-label="Sort results">
-            <option value="az">Sort: A–Z</option>
-            <option value="za">Sort: Z–A</option>
-          </select>
-        </div>
-
-        <div id="results-list" aria-live="polite">
-          <div class="loading-message">Loading directory...</div>
-        </div>
-
-      </main>
+      <div class="brand-divider"></div>
+      <div class="index-name">Art Index</div>
     </div>
 
-    <footer class="site-footer">
-      Harper's Art Index
-    </footer>
+    <nav class="navigation" id="navigation"
+         aria-label="Directory sections">
+      <button class="nav-button"
+        data-category="Photo Agencies">Photo Agencies</button>
+      <button class="nav-button"
+        data-category="Illustration Agencies">Illustration Agencies</button>
+      <button class="nav-button"
+        data-category="Publishers">Publishers</button>
+      <button class="nav-button"
+        data-category="Archives">Archives</button>
+      <button class="nav-button active"
+        data-category="Artists">Artists</button>
+    </nav>
+  </header>
 
+  <div class="directory-layout">
+
+    <aside class="filters">
+      <h2 class="filters-heading">Filters</h2>
+
+      <div class="filter-section">
+        <button class="filter-heading"
+          id="specialty-toggle"
+          aria-expanded="true"
+          aria-controls="specialty-options">
+          <span>Specialty</span>
+          <span id="specialty-symbol">−</span>
+        </button>
+        <div class="filter-options"
+          id="specialty-options"></div>
+      </div>
+
+      <div class="filter-section">
+        <button class="filter-heading"
+          id="location-toggle"
+          aria-expanded="false"
+          aria-controls="location-options">
+          <span>Location</span>
+          <span id="location-symbol">+</span>
+        </button>
+        <div class="filter-options"
+          id="location-options" hidden></div>
+      </div>
+
+      <button class="clear-filters" id="clear-filters">
+        Clear Filters
+      </button>
+    </aside>
+
+    <main class="directory-main">
+      <div class="search-wrapper">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input
+          class="search-input"
+          type="search"
+          id="search-input"
+          placeholder="Search agencies, artists, specialties..."
+          aria-label="Search the directory"
+        >
+      </div>
+
+      <div class="results-toolbar">
+        <span id="results-count">Loading...</span>
+        <select class="sort-select" id="sort-select"
+          aria-label="Sort results">
+          <option value="az">Sort: A–Z</option>
+          <option value="za">Sort: Z–A</option>
+        </select>
+      </div>
+
+      <div id="results-list" aria-live="polite">
+        <div class="loading-message">
+          Loading directory...
+        </div>
+      </div>
+    </main>
   </div>
 
-  <script>
-    /*
-      GOOGLE SHEETS CONNECTIONS
+  <footer class="site-footer">
+    Harper's Art Index
+  </footer>
+</div>
 
-      Every tab should have these columns:
+<script>
+const SHEET_ID =
+  "2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8";
 
-      Name, Website, Specialty, Location,
-      Description, Contact, Tags, Notes
+const SHEET_GIDS = {
+  "Photo Agencies": "0",
+  "Illustration Agencies": "1117426325",
+  "Publishers": "1313430076",
+  "Archives": "1061277045",
+  "Artists": "1721219062"
+};
 
-      The CSV is published publicly from Google Sheets.
-    */
+function sheetURL(gid) {
+  return "https://docs.google.com/spreadsheets/d/e/" +
+    SHEET_ID +
+    "/pub?single=true&output=csv&gid=" +
+    gid;
+}
 
-    const SHEET_ID =
-      "2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8";
+const directoryData = {};
+let activeCategory = "Artists";
+let selectedSpecialties = new Set();
+let selectedLocations = new Set();
+let requestVersion = 0;
 
-    const SHEET_GIDS = {
-      "Photo Agencies": "0",
-      "Illustration Agencies": "1117426325",
-      "Publishers": "1313430076",
-      "Archives": "1061277045",
-      "Artists": "1721219062"
-    };
+const searchInput = document.getElementById("search-input");
+const sortSelect = document.getElementById("sort-select");
+const resultsList = document.getElementById("results-list");
+const resultsCount = document.getElementById("results-count");
+const specialtyOptions =
+  document.getElementById("specialty-options");
+const locationOptions =
+  document.getElementById("location-options");
 
-    function sheetURL(gid) {
-      return (
-        "https://docs.google.com/spreadsheets/d/e/" +
-        SHEET_ID +
-        "/pub?single=true&output=csv&gid=" +
-        gid
-      );
-    }
+/* CSV PARSER */
 
-    const directoryData = {};
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let insideQuotes = false;
 
-    let activeCategory = "Artists";
-    let selectedSpecialties = new Set();
-    let selectedLocations = new Set();
+  text = text.replace(/^\uFEFF/, "");
 
-    const searchInput = document.getElementById("search-input");
-    const sortSelect = document.getElementById("sort-select");
-    const resultsList = document.getElementById("results-list");
-    const resultsCount = document.getElementById("results-count");
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
 
-    const specialtyOptions = document.getElementById("specialty-options");
-    const locationOptions = document.getElementById("location-options");
-
-    /*
-      CSV PARSER
-
-      Supports quoted values, embedded commas,
-      escaped quotation marks, and multiline cells.
-    */
-
-    function parseCSV(text) {
-      const rows = [];
-      let row = [];
-      let field = "";
-      let insideQuotes = false;
-
-      text = text.replace(/^\uFEFF/, "");
-
-      for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        const next = text[i + 1];
-
-        if (char === '"') {
-          if (insideQuotes && next === '"') {
-            field += '"';
-            i++;
-          } else {
-            insideQuotes = !insideQuotes;
-          }
-        } else if (char === "," && !insideQuotes) {
-          row.push(field);
-          field = "";
-        } else if (
-          (char === "\n" || char === "\r") &&
-          !insideQuotes
-        ) {
-          if (char === "\r" && next === "\n") {
-            i++;
-          }
-
-          row.push(field);
-          rows.push(row);
-
-          row = [];
-          field = "";
-        } else {
-          field += char;
-        }
+    if (char === '"') {
+      if (insideQuotes && next === '"') {
+        field += '"';
+        i++;
+      } else {
+        insideQuotes = !insideQuotes;
       }
-
-      if (field.length || row.length) {
-        row.push(field);
-        rows.push(row);
-      }
-
-      if (!rows.length) {
-        return [];
-      }
-
-      const headers = rows.shift().map(
-        header => header.trim()
-      );
-
-      return rows
-        .filter(row => row.some(cell => cell.trim()))
-        .map(row => {
-          const item = {};
-
-          headers.forEach((header, index) => {
-            item[header] = (row[index] || "").trim();
-          });
-
-          return item;
-        });
-    }
-
-    /*
-      DATA LOADING
-    */
-
-    async function loadCategory(category) {
-      if (directoryData[category]) {
-        return directoryData[category];
-      }
-
-      const gid = SHEET_GIDS[category];
-
-      const response = await fetch(
-        sheetURL(gid),
-        { cache: "no-store" }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          "Unable to load " + category
-        );
-      }
-
-      const csvText = await response.text();
-      const data = parseCSV(csvText);
-
-      directoryData[category] = data;
-
-      return data;
-    }
-
-    /*
-      FILTER HELPERS
-
-      Specialties can be written as:
-      Painter
-      Photographer
-      Painter; Illustrator
-      Painter, Illustrator
-
-      These are treated as individual specialties.
-    */
-
-    function splitValues(value) {
-      return String(value || "")
-        .split(/[;,]/)
-        .map(value => value.trim())
-        .filter(Boolean);
-    }
-
-    function uniqueValues(items, field) {
-      const values = new Map();
-
-      items.forEach(item => {
-        splitValues(item[field]).forEach(value => {
-          const key = value.toLocaleLowerCase();
-
-          if (!values.has(key)) {
-            values.set(key, value);
-          }
-        });
-      });
-
-      return Array.from(values.values()).sort(
-        (a, b) => a.localeCompare(b)
-      );
-    }
-
-    function createFilterOption(value, type) {
-      const label = document.createElement("label");
-      label.className = "filter-option";
-
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.value = value;
-
-      const span = document.createElement("span");
-      span.textContent = value;
-
-      checkbox.addEventListener("change", () => {
-        const targetSet =
-          type === "specialty"
-            ? selectedSpecialties
-            : selectedLocations;
-
-        if (checkbox.checked) {
-          targetSet.add(value);
-        } else {
-          targetSet.delete(value);
-        }
-
-        renderResults();
-      });
-
-      label.appendChild(checkbox);
-      label.appendChild(span);
-
-      return label;
-    }
-
-    function renderFilters() {
-      const items = directoryData[activeCategory] || [];
-
-      specialtyOptions.replaceChildren();
-      locationOptions.replaceChildren();
-
-      const specialties = uniqueValues(
-        items,
-        "Specialty"
-      );
-
-      const locations = uniqueValues(
-        items,
-        "Location"
-      );
-
-      specialties.forEach(value => {
-        specialtyOptions.appendChild(
-          createFilterOption(value, "specialty")
-        );
-      });
-
-      locations.forEach(value => {
-        locationOptions.appendChild(
-          createFilterOption(value, "location")
-        );
-      });
-
-      if (!specialties.length) {
-        const message = document.createElement("span");
-        message.textContent = "No specialties available";
-        message.style.color = "#68655f";
-        specialtyOptions.appendChild(message);
-      }
-
-      if (!locations.length) {
-        const message = document.createElement("span");
-        message.textContent = "No locations available";
-        message.style.color = "#68655f";
-        locationOptions.appendChild(message);
-      }
-    }
-
-    /*
-      SEARCH AND SORT
-    */
-
-    function getFilteredItems() {
-      const items = directoryData[activeCategory] || [];
-      const query = searchInput.value.trim().toLowerCase();
-
-      let filtered = items.filter(item => {
-        const searchableText = [
-          item.Name,
-          item.Specialty,
-          item.Location,
-          item.Description,
-          item.Tags,
-          item.Notes
-        ]
-          .join(" ")
-          .toLowerCase();
-
-        if (query && !searchableText.includes(query)) {
-          return false;
-        }
-
-        if (selectedSpecialties.size) {
-          const itemSpecialties = splitValues(
-            item.Specialty
-          ).map(value => value.toLowerCase());
-
-          const matchesSpecialty = Array.from(
-            selectedSpecialties
-          ).some(value =>
-            itemSpecialties.includes(value.toLowerCase())
-          );
-
-          if (!matchesSpecialty) {
-            return false;
-          }
-        }
-
-        if (selectedLocations.size) {
-          const itemLocations = splitValues(
-            item.Location
-          ).map(value => value.toLowerCase());
-
-          const matchesLocation = Array.from(
-            selectedLocations
-          ).some(value =>
-            itemLocations.includes(value.toLowerCase())
-          );
-
-          if (!matchesLocation) {
-            return false;
-          }
-        }
-
-        return true;
-      });
-
-      filtered.sort((a, b) => {
-        const comparison = (a.Name || "").localeCompare(
-          b.Name || "",
-          undefined,
-          {
-            sensitivity: "base",
-            numeric: true
-          }
-        );
-
-        return sortSelect.value === "za"
-          ? -comparison
-          : comparison;
-      });
-
-      return filtered;
-    }
-
-    /*
-      LINK VALIDATION
-
-      Only HTTP and HTTPS links are allowed.
-      Empty or malformed links do not create
-      clickable rows.
-    */
-
-    function safeWebsite(value) {
-      const raw = String(value || "").trim();
-
-      if (!raw) {
-        return "";
-      }
-
-      try {
-        const candidate = /^https?:\/\//i.test(raw)
-          ? raw
-          : "https://" + raw;
-
-        const url = new URL(candidate);
-
-        if (
-          url.protocol !== "https:" &&
-          url.protocol !== "http:"
-        ) {
-          return "";
-        }
-
-        if (
-          !url.hostname ||
-          !url.hostname.includes(".")
-        ) {
-          return "";
-        }
-
-        return url.href;
-      } catch {
-        return "";
-      }
-    }
-
-    /*
-      RESULT RENDERING
-
-      ARTISTS:
-      Name | Specialty | Location | Arrow
-
-      ALL OTHER CATEGORIES:
-      Name | Location | Arrow
-    */
-
-    function createResultRow(item) {
-      const isArtist = activeCategory === "Artists";
-      const website = safeWebsite(item.Website);
-
-      const row = document.createElement(
-        website ? "a" : "div"
-      );
-
-      row.className =
-        "result-row" + (isArtist ? " artist-row" : "");
-
-      if (website) {
-        row.href = website;
-        row.target = "_blank";
-        row.rel = "noopener noreferrer";
-        row.setAttribute(
-          "aria-label",
-          "Visit website for " + (item.Name || "this entry")
-        );
-      }
-
-      const name = document.createElement("span");
-      name.className = "result-name";
-      name.textContent = item.Name || "Untitled";
-
-      row.appendChild(name);
-
-      if (isArtist) {
-        const specialty = document.createElement("span");
-        specialty.className = "result-specialty";
-
-        specialty.textContent = (item.Specialty || "")
-          .replace(/;\s*/g, ", ");
-
-        row.appendChild(specialty);
-      }
-
-      const location = document.createElement("span");
-      location.className = "result-location";
-
-      location.textContent = (item.Location || "")
-        .replace(/;\s*/g, "; ");
-
-      row.appendChild(location);
-
-      const arrow = document.createElement("span");
-      arrow.className = "result-arrow";
-      arrow.textContent = website ? "↗" : "";
-
-      if (website) {
-        arrow.setAttribute("aria-hidden", "true");
-      }
-
-      row.appendChild(arrow);
-
-      return row;
-    }
-
-    function renderResults() {
-      const items = getFilteredItems();
-
-      resultsCount.textContent =
-        items.length +
-        (items.length === 1 ? " result" : " results");
-
-      resultsList.replaceChildren();
-
-      if (!items.length) {
-        const empty = document.createElement("div");
-        empty.className = "empty-message";
-        empty.textContent = "No results found.";
-        resultsList.appendChild(empty);
-        return;
-      }
-
-      const fragment = document.createDocumentFragment();
-
-      items.forEach(item => {
-        fragment.appendChild(
-          createResultRow(item)
-        );
-      });
-
-      resultsList.appendChild(fragment);
-    }
-
-    /*
-      CATEGORY NAVIGATION
-    */
-
-    async function switchCategory(category) {
-      activeCategory = category;
-
-      selectedSpecialties.clear();
-      selectedLocations.clear();
-
-      searchInput.value = "";
-      sortSelect.value = "az";
-
-      document.querySelectorAll(".nav-button")
-        .forEach(button => {
-          const active =
-            button.dataset.category === category;
-
-          button.classList.toggle("active", active);
-          button.setAttribute(
-            "aria-current",
-            active ? "page" : "false"
-          );
-        });
-
-      resultsList.innerHTML =
-        '<div class="loading-message">Loading directory...</div>';
-
-      resultsCount.textContent = "Loading...";
-
-      try {
-        await loadCategory(category);
-
-        if (activeCategory !== category) {
-          return;
-        }
-
-        renderFilters();
-        renderResults();
-      } catch (error) {
-        if (activeCategory !== category) {
-          return;
-        }
-
-        console.error(error);
-
-        resultsCount.textContent = "Unavailable";
-
-        resultsList.innerHTML =
-          '<div class="empty-message">' +
-          'Unable to load this section. ' +
-          'Check the published Google Sheets CSV.' +
-          '</div>';
-      }
-    }
-
-    document.querySelectorAll(".nav-button")
-      .forEach(button => {
-        button.addEventListener("click", () => {
-          switchCategory(button.dataset.category);
-        });
-      });
-
-    /*
-      COLLAPSIBLE FILTERS
-    */
-
-    function setupFilterToggle(
-      toggleId,
-      optionsId,
-      symbolId
+    } else if (char === "," && !insideQuotes) {
+      row.push(field);
+      field = "";
+    } else if (
+      (char === "\n" || char === "\r") &&
+      !insideQuotes
     ) {
-      const toggle = document.getElementById(toggleId);
-      const options = document.getElementById(optionsId);
-      const symbol = document.getElementById(symbolId);
+      if (char === "\r" && next === "\n") i++;
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = "";
+    } else {
+      field += char;
+    }
+  }
 
-      toggle.addEventListener("click", () => {
-        const expanded =
-          toggle.getAttribute("aria-expanded") === "true";
+  if (field.length || row.length) {
+    row.push(field);
+    rows.push(row);
+  }
 
-        toggle.setAttribute(
-          "aria-expanded",
-          String(!expanded)
-        );
+  if (!rows.length) return [];
 
-        options.hidden = expanded;
-        symbol.textContent = expanded ? "+" : "−";
+  const headers = rows.shift().map(
+    header => header.trim()
+  );
+
+  return rows
+    .filter(row => row.some(cell => cell.trim()))
+    .map(row => {
+      const item = {};
+      headers.forEach((header, index) => {
+        item[header] = (row[index] || "").trim();
       });
+      return item;
+    });
+}
+
+/* LOAD GOOGLE SHEETS */
+
+async function loadCategory(category) {
+  if (directoryData[category]) {
+    return directoryData[category];
+  }
+
+  const response = await fetch(
+    sheetURL(SHEET_GIDS[category]),
+    { cache: "no-store" }
+  );
+
+  if (!response.ok) {
+    throw new Error("Unable to load " + category);
+  }
+
+  const data = parseCSV(await response.text());
+  directoryData[category] = data;
+  return data;
+}
+
+/* FILTER UTILITIES */
+
+function splitValues(value) {
+  return String(value || "")
+    .split(/[;,]/)
+    .map(value => value.trim())
+    .filter(Boolean);
+}
+
+function uniqueValues(items, field) {
+  const values = new Map();
+
+  items.forEach(item => {
+    splitValues(item[field]).forEach(value => {
+      const key = value.toLocaleLowerCase();
+      if (!values.has(key)) values.set(key, value);
+    });
+  });
+
+  return Array.from(values.values()).sort(
+    (a, b) => a.localeCompare(b)
+  );
+}
+
+function createFilterOption(value, type) {
+  const label = document.createElement("label");
+  label.className = "filter-option";
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.value = value;
+
+  const span = document.createElement("span");
+  span.textContent = value;
+
+  checkbox.addEventListener("change", () => {
+    const targetSet = type === "specialty"
+      ? selectedSpecialties
+      : selectedLocations;
+
+    if (checkbox.checked) {
+      targetSet.add(value);
+    } else {
+      targetSet.delete(value);
     }
 
-    setupFilterToggle(
-      "specialty-toggle",
-      "specialty-options",
-      "specialty-symbol"
+    renderResults();
+  });
+
+  label.append(checkbox, span);
+  return label;
+}
+
+function renderFilters() {
+  const items = directoryData[activeCategory] || [];
+
+  specialtyOptions.replaceChildren();
+  locationOptions.replaceChildren();
+
+  const specialties = uniqueValues(items, "Specialty");
+  const locations = uniqueValues(items, "Location");
+
+  specialties.forEach(value => {
+    specialtyOptions.appendChild(
+      createFilterOption(value, "specialty")
+    );
+  });
+
+  locations.forEach(value => {
+    locationOptions.appendChild(
+      createFilterOption(value, "location")
+    );
+  });
+
+  if (!specialties.length) {
+    const message = document.createElement("span");
+    message.textContent = "No specialties available";
+    specialtyOptions.appendChild(message);
+  }
+
+  if (!locations.length) {
+    const message = document.createElement("span");
+    message.textContent = "No locations available";
+    locationOptions.appendChild(message);
+  }
+}
+
+/* SEARCH AND SORT */
+
+function getFilteredItems() {
+  const items = directoryData[activeCategory] || [];
+  const query = searchInput.value.trim().toLowerCase();
+
+  const filtered = items.filter(item => {
+    const searchableText = [
+      item.Name,
+      item.Specialty,
+      item.Location,
+      item.Description,
+      item.Tags,
+      item.Notes
+    ].join(" ").toLowerCase();
+
+    if (query && !searchableText.includes(query)) {
+      return false;
+    }
+
+    if (selectedSpecialties.size) {
+      const values = splitValues(item.Specialty)
+        .map(value => value.toLowerCase());
+
+      if (!Array.from(selectedSpecialties).some(
+        value => values.includes(value.toLowerCase())
+      )) return false;
+    }
+
+    if (selectedLocations.size) {
+      const values = splitValues(item.Location)
+        .map(value => value.toLowerCase());
+
+      if (!Array.from(selectedLocations).some(
+        value => values.includes(value.toLowerCase())
+      )) return false;
+    }
+
+    return true;
+  });
+
+  filtered.sort((a, b) => {
+    const comparison = (a.Name || "").localeCompare(
+      b.Name || "",
+      undefined,
+      { sensitivity: "base", numeric: true }
     );
 
-    setupFilterToggle(
-      "location-toggle",
-      "location-options",
-      "location-symbol"
+    return sortSelect.value === "za"
+      ? -comparison
+      : comparison;
+  });
+
+  return filtered;
+}
+
+/* SAFE EXTERNAL LINKS */
+
+function safeWebsite(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+
+  try {
+    const candidate = /^https?:\/\//i.test(raw)
+      ? raw
+      : "https://" + raw;
+
+    const url = new URL(candidate);
+
+    if (!["https:", "http:"].includes(url.protocol)) {
+      return "";
+    }
+
+    if (!url.hostname.includes(".")) return "";
+
+    return url.href;
+  } catch {
+    return "";
+  }
+}
+
+/* DIRECTORY ROWS */
+
+function createResultRow(item) {
+  const isArtist = activeCategory === "Artists";
+  const website = safeWebsite(item.Website);
+
+  const row = document.createElement(
+    website ? "a" : "div"
+  );
+
+  row.className = "result-row" +
+    (isArtist ? " artist-row" : "");
+
+  if (website) {
+    row.href = website;
+    row.target = "_blank";
+    row.rel = "noopener noreferrer";
+    row.setAttribute(
+      "aria-label",
+      "Visit website for " + (item.Name || "this entry")
+    );
+  }
+
+  const name = document.createElement("span");
+  name.className = "result-name";
+  name.textContent = item.Name || "Untitled";
+  row.appendChild(name);
+
+  /* ARTISTS DISPLAY THEIR SPECIALTY */
+  if (isArtist) {
+    const specialty = document.createElement("span");
+    specialty.className = "result-specialty";
+    specialty.textContent = (item.Specialty || "")
+      .replace(/;\s*/g, ", ");
+    row.appendChild(specialty);
+  }
+
+  const location = document.createElement("span");
+  location.className = "result-location";
+  location.textContent = item.Location || "";
+  row.appendChild(location);
+
+  const arrow = document.createElement("span");
+  arrow.className = "result-arrow";
+  arrow.textContent = website ? "↗" : "";
+  arrow.setAttribute("aria-hidden", "true");
+  row.appendChild(arrow);
+
+  return row;
+}
+
+function renderResults() {
+  const items = getFilteredItems();
+
+  resultsCount.textContent = items.length +
+    (items.length === 1 ? " result" : " results");
+
+  resultsList.replaceChildren();
+
+  if (!items.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty-message";
+    empty.textContent = "No results found.";
+    resultsList.appendChild(empty);
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+
+  items.forEach(item => {
+    fragment.appendChild(createResultRow(item));
+  });
+
+  resultsList.appendChild(fragment);
+}
+
+/* CATEGORY NAVIGATION */
+
+async function switchCategory(category) {
+  const version = ++requestVersion;
+  activeCategory = category;
+
+  selectedSpecialties.clear();
+  selectedLocations.clear();
+  searchInput.value = "";
+  sortSelect.value = "az";
+
+  document.querySelectorAll(".nav-button")
+    .forEach(button => {
+      const active = button.dataset.category === category;
+      button.classList.toggle("active", active);
+      if (active) {
+        button.setAttribute("aria-current", "page");
+      } else {
+        button.removeAttribute("aria-current");
+      }
+    });
+
+  resultsList.innerHTML =
+    '<div class="loading-message">Loading directory...</div>';
+  resultsCount.textContent = "Loading...";
+
+  try {
+    await loadCategory(category);
+
+    if (version !== requestVersion) return;
+
+    renderFilters();
+    renderResults();
+  } catch (error) {
+    if (version !== requestVersion) return;
+
+    console.error(error);
+    resultsCount.textContent = "Unavailable";
+
+    resultsList.innerHTML =
+      '<div class="empty-message">' +
+      'Unable to load this section. ' +
+      'Check the published Google Sheets CSV.' +
+      '</div>';
+  }
+}
+
+document.querySelectorAll(".nav-button")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      switchCategory(button.dataset.category);
+    });
+  });
+
+/* COLLAPSIBLE FILTERS */
+
+function setupFilterToggle(toggleId, optionsId, symbolId) {
+  const toggle = document.getElementById(toggleId);
+  const options = document.getElementById(optionsId);
+  const symbol = document.getElementById(symbolId);
+
+  toggle.addEventListener("click", () => {
+    const expanded =
+      toggle.getAttribute("aria-expanded") === "true";
+
+    toggle.setAttribute(
+      "aria-expanded",
+      String(!expanded)
     );
 
-    /*
-      CLEAR FILTERS
-    */
+    options.hidden = expanded;
+    symbol.textContent = expanded ? "+" : "−";
+  });
+}
 
-    document.getElementById("clear-filters")
-      .addEventListener("click", () => {
-        selectedSpecialties.clear();
-        selectedLocations.clear();
+setupFilterToggle(
+  "specialty-toggle",
+  "specialty-options",
+  "specialty-symbol"
+);
 
-        searchInput.value = "";
+setupFilterToggle(
+  "location-toggle",
+  "location-options",
+  "location-symbol"
+);
 
-        document.querySelectorAll(
-          '.filter-options input[type="checkbox"]'
-        ).forEach(checkbox => {
-          checkbox.checked = false;
-        });
+/* CLEAR FILTERS */
 
-        renderResults();
-      });
+document.getElementById("clear-filters")
+  .addEventListener("click", () => {
+    selectedSpecialties.clear();
+    selectedLocations.clear();
+    searchInput.value = "";
 
-    /*
-      SEARCH EVENTS
-    */
+    document.querySelectorAll(
+      '.filter-options input[type="checkbox"]'
+    ).forEach(checkbox => {
+      checkbox.checked = false;
+    });
 
-    searchInput.addEventListener(
-      "input",
-      renderResults
-    );
+    renderResults();
+  });
 
-    sortSelect.addEventListener(
-      "change",
-      renderResults
-    );
+searchInput.addEventListener("input", renderResults);
+sortSelect.addEventListener("change", renderResults);
 
-    /*
-      INITIAL LOAD
-    */
+/* START ON ARTISTS */
+switchCategory("Artists");
+</script>
 
-    switchCategory("Artists");
-  </script>
 </body>
 </html>
