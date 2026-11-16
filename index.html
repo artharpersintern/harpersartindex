@@ -14,9 +14,7 @@
   --line: #c8c4bd;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -25,17 +23,12 @@ body {
   font-family: Georgia, "Times New Roman", serif;
 }
 
-button, input, select {
-  font: inherit;
-}
+button, input, select { font: inherit; }
+button { cursor: pointer; }
 
-button {
-  cursor: pointer;
-}
+/* HEADER */
 
-header {
-  padding: 28px 4% 0;
-}
+header { padding: 28px 4% 0; }
 
 .header-inner {
   display: flex;
@@ -88,18 +81,22 @@ nav button.active {
   border-bottom-color: var(--ink);
 }
 
-nav button:hover {
-  opacity: .6;
-}
+nav button:hover { opacity: .6; }
+
+/* PAGE LAYOUT */
 
 .layout {
   display: grid;
   grid-template-columns: 235px minmax(0, 1fr);
   gap: 45px;
-  padding: 65px 4%;
+  padding: 50px 4%;
   max-width: 1800px;
   margin: auto;
 }
+
+main { min-width: 0; }
+
+/* FILTER SIDEBAR */
 
 aside {
   border-right: 1px solid var(--line);
@@ -107,44 +104,72 @@ aside {
 }
 
 aside h2 {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: normal;
-  margin: 0 0 25px;
+  margin: 0 0 18px;
 }
 
 .filter-group {
   border-top: 1px solid var(--line);
-  padding: 22px 0;
+  padding: 12px 0;
 }
 
-.filter-group h3 {
+.filter-group summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
   font-size: 12px;
+  font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin: 0 0 17px;
+  padding: 4px 0 10px;
+}
+
+.filter-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.filter-group summary::after {
+  content: "+";
+  font-size: 17px;
+  font-weight: normal;
+}
+
+.filter-group[open] summary::after {
+  content: "−";
+}
+
+.filter-options {
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 5px;
 }
 
 .filter-option {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 12px 0;
-  font-size: 15px;
+  gap: 9px;
+  margin: 8px 0;
+  font-size: 13px;
   cursor: pointer;
 }
 
 .filter-option input {
   accent-color: var(--ink);
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .clear-button {
   border: 1px solid var(--ink);
   background: transparent;
-  padding: 10px 15px;
+  padding: 9px 12px;
   width: 100%;
-  font-size: 13px;
+  margin-top: 15px;
+  font-size: 12px;
 }
 
 .clear-button:hover {
@@ -152,21 +177,20 @@ aside h2 {
   color: var(--paper);
 }
 
-main {
-  min-width: 0;
-}
+/* SEARCH */
 
 .search-box {
   display: flex;
   align-items: center;
   border: 1px solid var(--ink);
-  padding: 0 22px;
-  height: 72px;
-  gap: 18px;
+  padding: 0 20px;
+  height: 66px;
+  gap: 15px;
 }
 
 .search-icon {
   font-size: 27px;
+  line-height: 1;
 }
 
 .search-box input {
@@ -175,70 +199,63 @@ main {
   border: 0;
   outline: none;
   background: transparent;
-  font-size: 22px;
+  font-size: 21px;
   font-style: italic;
   color: var(--ink);
 }
+
+.status {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.status:empty { display: none; }
+
+/* RESULTS HEADER */
 
 .results-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 38px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid var(--line);
+  margin-top: 30px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--ink);
+  gap: 15px;
+  font-size: 14px;
 }
 
 .results-bar select {
   border: 0;
   background: transparent;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--ink);
+  cursor: pointer;
 }
+
+/* COMPACT DIRECTORY ENTRIES */
 
 .entry {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 170px 25px;
-  gap: 25px;
-  padding: 28px 0;
+  align-items: center;
+  gap: 22px;
+  padding: 13px 0;
+  min-height: 55px;
   border-bottom: 1px solid var(--line);
+  transition: background .15s ease;
+}
+
+.entry:hover {
+  background: rgba(0, 0, 0, .025);
 }
 
 .entry h2 {
-  font-size: 30px;
+  font-size: 23px;
   font-weight: normal;
-  margin: 0 0 8px;
-}
-
-.entry-type {
-  text-transform: uppercase;
-  font-size: 11px;
-  font-weight: bold;
-  letter-spacing: 1.5px;
-  margin-bottom: 12px;
-}
-
-.entry-description {
-  font-size: 16px;
-  line-height: 1.5;
-  max-width: 740px;
-}
-
-.entry-meta {
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.entry-meta em {
-  display: block;
-  margin-top: 10px;
-  color: var(--muted);
-}
-
-.entry-link {
-  color: var(--ink);
-  font-size: 21px;
-  text-decoration: none;
+  line-height: 1.2;
+  letter-spacing: -.3px;
+  margin: 0;
 }
 
 .entry h2 a {
@@ -246,28 +263,40 @@ main {
   text-decoration: none;
 }
 
-.entry h2 a:hover,
-.entry-link:hover {
+.entry h2 a:hover {
   opacity: .55;
 }
 
-.empty {
-  padding: 45px 0;
+.entry-meta {
+  font-size: 13px;
+  line-height: 1.3;
   color: var(--muted);
 }
 
-.status {
-  margin-top: 18px;
+.entry-link {
+  color: var(--ink);
+  font-size: 20px;
+  text-decoration: none;
+  text-align: right;
+  display: block;
+}
+
+.entry-link:hover { opacity: .55; }
+
+.empty {
+  padding: 35px 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
 }
 
 footer {
-  padding: 30px 4%;
+  padding: 25px 4%;
   border-top: 1px solid var(--line);
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
 }
+
+/* RESPONSIVE */
 
 @media (max-width: 1050px) {
   .header-inner {
@@ -282,51 +311,53 @@ footer {
 }
 
 @media (max-width: 700px) {
+  header { padding-top: 20px; }
+
+  .header-inner { gap: 15px; }
+
+  .brand { gap: 12px; }
+  .logo { font-size: 25px; }
+  .brand-subtitle { font-size: 23px; }
+
+  nav {
+    gap: 16px;
+  }
+
+  nav button {
+    font-size: 13px;
+    padding: 9px 0;
+  }
+
   .layout {
     display: block;
-    padding-top: 35px;
+    padding-top: 30px;
   }
 
   aside {
     border-right: 0;
     border-bottom: 1px solid var(--line);
     padding: 0 0 20px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
 
-  .filter-group {
-    padding: 15px 0;
-  }
+  .filter-options { max-height: 180px; }
+
+  .search-box { height: 58px; }
+
+  .search-box input { font-size: 16px; }
 
   .entry {
-    grid-template-columns: 1fr 25px;
+    grid-template-columns: minmax(0, 1fr) 90px 20px;
+    gap: 10px;
+    padding: 12px 0;
+    min-height: 50px;
   }
 
-  .entry-meta {
-    grid-column: 1;
-    grid-row: 2;
-  }
+  .entry h2 { font-size: 18px; }
 
-  .entry-link {
-    grid-column: 2;
-    grid-row: 1;
-  }
+  .entry-meta { font-size: 11px; }
 
-  .search-box input {
-    font-size: 16px;
-  }
-
-  .brand {
-    gap: 12px;
-  }
-
-  .logo {
-    font-size: 25px;
-  }
-
-  .brand-subtitle {
-    font-size: 23px;
-  }
+  .entry-link { font-size: 17px; }
 }
 </style>
 </head>
@@ -349,15 +380,15 @@ footer {
   <aside>
     <h2>Filters</h2>
 
-    <div class="filter-group">
-      <h3>Specialty</h3>
-      <div id="specialtyFilters"></div>
-    </div>
+    <details class="filter-group" open>
+      <summary>Specialty</summary>
+      <div class="filter-options" id="specialtyFilters"></div>
+    </details>
 
-    <div class="filter-group">
-      <h3>Location</h3>
-      <div id="locationFilters"></div>
-    </div>
+    <details class="filter-group">
+      <summary>Location</summary>
+      <div class="filter-options" id="locationFilters"></div>
+    </details>
 
     <button class="clear-button" id="clearFilters">
       Clear Filters
@@ -365,6 +396,7 @@ footer {
   </aside>
 
   <main>
+
     <div class="search-box">
       <span class="search-icon" aria-hidden="true">&#9906;</span>
       <input
@@ -390,8 +422,8 @@ footer {
     </div>
 
     <div id="results"></div>
-  </main>
 
+  </main>
 </div>
 
 <footer>
@@ -400,30 +432,33 @@ footer {
 
 <script>
 
-// ============================================
-// 1. GOOGLE SHEETS CSV LINKS
-// ============================================
+// ==========================================
+// GOOGLE SHEETS CONNECTIONS
+// ==========================================
 
-// Replace each placeholder with the published CSV
-// URL for the corresponding Google Sheets tab.
+const SHEET_ID =
+  "2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8";
+
+const BASE_URL =
+  "https://docs.google.com/spreadsheets/d/e/" +
+  SHEET_ID + "/pub?single=true&output=csv&gid=";
 
 const CSV_URLS = {
-  "Photo Agencies": "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8/pub?gid=0&single=true&output=csv",
-  "Illustration Agencies": "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8/pub?gid=1117426325&single=true&output=csv",
-  "Publishers": "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8/pub?gid=1313430076&single=true&output=csv",
-  "Archives": "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8/pub?gid=1061277045&single=true&output=csv",
-  "Artists": "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8/pub?gid=1721219062&single=true&output=csv"
+  "Photo Agencies": BASE_URL + "0",
+  "Illustration Agencies": BASE_URL + "1117426325",
+  "Publishers": BASE_URL + "1313430076",
+  "Archives": BASE_URL + "1061277045",
+  "Artists": BASE_URL + "1721219062"
 };
 
-// ============================================
-// 2. WEBSITE STATE
-// ============================================
+// ==========================================
+// STATE AND ELEMENTS
+// ==========================================
 
 const categories = Object.keys(CSV_URLS);
 
 let allData = [];
 let activeCategory = "Photo Agencies";
-
 let selectedSpecialties = new Set();
 let selectedLocations = new Set();
 
@@ -432,11 +467,11 @@ const results = document.getElementById("results");
 const searchInput = document.getElementById("search");
 const sortInput = document.getElementById("sort");
 const resultCount = document.getElementById("resultCount");
-const status = document.getElementById("status");
+const statusElement = document.getElementById("status");
 
-// ============================================
-// 3. CSV PARSER
-// ============================================
+// ==========================================
+// CSV PARSING
+// ==========================================
 
 function parseCSV(text) {
   const rows = [];
@@ -460,8 +495,7 @@ function parseCSV(text) {
       row.push(field);
       field = "";
     } else if (
-      (char === "\n" || char === "\r") &&
-      !quoted
+      (char === "\n" || char === "\r") && !quoted
     ) {
       if (char === "\r" && text[i + 1] === "\n") i++;
 
@@ -487,14 +521,10 @@ function parseCSV(text) {
   return rows;
 }
 
-// ============================================
-// 4. CONVERT CSV ROWS TO OBJECTS
-// ============================================
-
 function csvToObjects(text, category) {
   const rows = parseCSV(text);
 
-  if (rows.length === 0) {
+  if (!rows.length) {
     throw new Error("CSV is empty");
   }
 
@@ -503,7 +533,7 @@ function csvToObjects(text, category) {
   );
 
   if (!headers.includes("name")) {
-    throw new Error("CSV must have a Name column");
+    throw new Error("CSV must contain a Name column");
   }
 
   return rows.map(row => {
@@ -522,31 +552,21 @@ function csvToObjects(text, category) {
       contact: record.contact || "",
       tags: record.tags || "",
       notes: record.notes || "",
-      category: category
+      category
     };
   }).filter(item => item.name);
 }
 
-// ============================================
-// 5. LOAD ALL FIVE GOOGLE SHEETS TABS
-// ============================================
+// ==========================================
+// LOAD GOOGLE SHEETS
+// ==========================================
 
 async function loadSheets() {
-  status.textContent = "Loading directory...";
+  statusElement.textContent = "Loading directory...";
 
   const requests = categories.map(async category => {
-    const url = CSV_URLS[category];
-
-    if (!url || url === "PASTE_CSV_URL_HERE") {
-      return {
-        category,
-        records: [],
-        error: "CSV URL not configured"
-      };
-    }
-
     try {
-      const response = await fetch(url, {
+      const response = await fetch(CSV_URLS[category], {
         cache: "no-store"
       });
 
@@ -554,16 +574,15 @@ async function loadSheets() {
         throw new Error("HTTP " + response.status);
       }
 
-      const csvText = await response.text();
+      const text = await response.text();
 
       return {
         category,
-        records: csvToObjects(csvText, category),
+        records: csvToObjects(text, category),
         error: null
       };
-
     } catch (error) {
-      console.error("Error loading " + category, error);
+      console.error(category, error);
 
       return {
         category,
@@ -579,22 +598,18 @@ async function loadSheets() {
 
   const failures = loaded.filter(item => item.error);
 
-  if (failures.length) {
-    status.textContent =
-      "Some categories could not load: " +
-      failures.map(item => item.category).join(", ") +
-      ". Check their published CSV URLs.";
-  } else {
-    status.textContent = "";
-  }
+  statusElement.textContent = failures.length
+    ? "Unable to load: " +
+      failures.map(item => item.category).join(", ")
+    : "";
 
   createFilters();
   render();
 }
 
-// ============================================
-// 6. CATEGORY NAVIGATION
-// ============================================
+// ==========================================
+// NAVIGATION
+// ==========================================
 
 function createNavigation() {
   navigation.replaceChildren();
@@ -626,9 +641,9 @@ function createNavigation() {
   });
 }
 
-// ============================================
-// 7. CREATE FILTERS FROM CSV DATA
-// ============================================
+// ==========================================
+// FILTERS
+// ==========================================
 
 function splitValues(value) {
   return String(value || "")
@@ -697,10 +712,6 @@ function buildCheckboxes(containerId, values, selection) {
   });
 }
 
-// ============================================
-// 8. SEARCH AND FILTER LOGIC
-// ============================================
-
 function matchesSelection(value, selection) {
   if (selection.size === 0) return true;
 
@@ -710,6 +721,10 @@ function matchesSelection(value, selection) {
     values.includes(item)
   );
 }
+
+// ==========================================
+// SAFE WEBSITE LINKS
+// ==========================================
 
 function safeWebsite(url) {
   if (!url) return "";
@@ -732,9 +747,9 @@ function safeWebsite(url) {
   return "";
 }
 
-// ============================================
-// 9. DISPLAY RESULTS
-// ============================================
+// ==========================================
+// COMPACT DIRECTORY RESULTS
+// ==========================================
 
 function render() {
   const query = searchInput.value.toLowerCase().trim();
@@ -744,6 +759,8 @@ function render() {
       return false;
     }
 
+    // Search all descriptive fields even though
+    // they are not shown in the directory rows.
     const searchable = [
       item.name,
       item.description,
@@ -787,7 +804,7 @@ function render() {
 
   results.replaceChildren();
 
-  if (filtered.length === 0) {
+  if (!filtered.length) {
     const empty = document.createElement("div");
     empty.className = "empty";
     empty.textContent = "No matching resources found.";
@@ -799,72 +816,51 @@ function render() {
     const entry = document.createElement("article");
     entry.className = "entry";
 
-    const content = document.createElement("div");
-
+    // NAME
     const title = document.createElement("h2");
     const website = safeWebsite(item.website);
 
     if (website) {
       const titleLink = document.createElement("a");
-
       titleLink.href = website;
       titleLink.target = "_blank";
       titleLink.rel = "noopener noreferrer";
       titleLink.textContent = item.name;
-
       title.appendChild(titleLink);
     } else {
       title.textContent = item.name;
     }
 
-    const type = document.createElement("div");
-    type.className = "entry-type";
-    type.textContent = item.category;
-
-    const description = document.createElement("div");
-    description.className = "entry-description";
-    description.textContent = item.description;
-
-    content.append(title, type, description);
-
+    // LOCATION
     const meta = document.createElement("div");
     meta.className = "entry-meta";
+    meta.textContent = item.location;
 
-    const location = document.createElement("div");
-    location.textContent = item.location;
-
-    const specialty = document.createElement("em");
-    specialty.textContent = item.specialty;
-
-    meta.append(location, specialty);
-
-    const link = document.createElement("div");
+    // EXTERNAL LINK
+    const linkContainer = document.createElement("div");
 
     if (website) {
-      const anchor = document.createElement("a");
-
-      anchor.className = "entry-link";
-      anchor.href = website;
-      anchor.target = "_blank";
-      anchor.rel = "noopener noreferrer";
-      anchor.textContent = "↗";
-
-      anchor.setAttribute(
+      const link = document.createElement("a");
+      link.className = "entry-link";
+      link.href = website;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "↗";
+      link.setAttribute(
         "aria-label",
         "Visit " + item.name
       );
-
-      link.appendChild(anchor);
+      linkContainer.appendChild(link);
     }
 
-    entry.append(content, meta, link);
+    entry.append(title, meta, linkContainer);
     results.appendChild(entry);
   });
 }
 
-// ============================================
-// 10. EVENT LISTENERS
-// ============================================
+// ==========================================
+// EVENT LISTENERS
+// ==========================================
 
 document.getElementById("clearFilters")
   .addEventListener("click", () => {
@@ -878,9 +874,9 @@ document.getElementById("clearFilters")
 searchInput.addEventListener("input", render);
 sortInput.addEventListener("change", render);
 
-// ============================================
-// 11. INITIALIZE WEBSITE
-// ============================================
+// ==========================================
+// INITIALIZE
+// ==========================================
 
 createNavigation();
 createFilters();
