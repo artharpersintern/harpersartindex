@@ -335,12 +335,17 @@ a {
 }
 
 .result-row.artist-row {
-  grid-template-columns:
-    minmax(0, 1fr)
-    155px
-    185px
-    30px;
+  grid-template-columns: minmax(0, 1fr) 140px 160px 160px 30px;
 }
+.artist-entry { border-bottom: 1px solid var(--line); }
+.artist-entry .result-row { border-bottom: 0; }
+.result-agency { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.artist-history { padding: 0 0 15px; font-size: 13px; }
+.history-preview { color: var(--muted); margin-bottom: 7px; }
+.history-toggle { border: 0; padding: 4px 0; background: none; text-decoration: underline; text-underline-offset: 3px; font-size: 12px; }
+.history-details { margin: 10px 0 0; padding: 0 0 0 18px; color: var(--muted); }
+.history-details li { margin: 5px 0; }
+.history-details[hidden] { display: none; }
 
 .result-row[href]:hover .result-name {
   text-decoration: underline;
@@ -533,6 +538,16 @@ a {
     grid-column: 2;
     grid-row: 1;
   }
+}
+@media (max-width: 1100px) {
+  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 110px 120px 120px 24px; }
+}
+@media (max-width: 850px) {
+  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 100px 100px 100px 20px; gap: 10px; }
+}
+@media (max-width: 650px) {
+  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 24px; }
+  .result-row.artist-row .result-agency { grid-column: 1; grid-row: 4; }
 }
 </style>
 </head>
@@ -970,6 +985,8 @@ function getFilteredItems() {
       item.Specialty,
       item.Location,
       item.Description,
+      item.Agency,
+      item.History,
       item.Tags,
       item.Notes
     ]
@@ -1071,62 +1088,71 @@ function safeWebsite(value) {
 
 /* RESULT ROWS */
 
+function parseHistory(value) {
+  return String(value || "").split(";").map(s => s.trim()).filter(Boolean)
+    .sort((a, b) => b.localeCompare(a));
+}
+
 function createResultRow(item) {
   const isArtist = activeCategory === "Artists";
   const website = safeWebsite(item.Website);
-
-  const row = document.createElement(
-    website ? "a" : "div"
-  );
-
-  row.className =
-    "result-row" + (isArtist ? " artist-row" : "");
-
+  const row = document.createElement(website ? "a" : "div");
+  row.className = "result-row" + (isArtist ? " artist-row" : "");
   if (website) {
     row.href = website;
     row.target = "_blank";
     row.rel = "noopener noreferrer";
-
-    row.setAttribute(
-      "aria-label",
-      "Visit website for " + (item.Name || "this entry")
-    );
   }
+  const addText = (className, value) => {
+    const span = document.createElement("span");
+    span.className = className;
+    span.textContent = value || "";
+    row.appendChild(span);
+  };
+  addText("result-name", item.Name || "Untitled");
+  if (isArtist) addText("result-specialty", (item.Specialty || "").replace(/;\s*/g, ", "));
+  addText("result-location", item.Location);
+  if (isArtist) addText("result-agency", item.Agency);
+  addText("result-arrow", website ? "↗" : "");
 
-  const name = document.createElement("span");
-  name.className = "result-name";
-  name.textContent = item.Name || "Untitled";
-
-  row.appendChild(name);
-
-  /* ARTIST SPECIALTY */
-
-  if (isArtist) {
-    const specialty = document.createElement("span");
-    specialty.className = "result-specialty";
-
-    specialty.textContent = (item.Specialty || "")
-      .replace(/;\s*/g, ", ");
-
-    row.appendChild(specialty);
+  if (!isArtist) return row;
+  const entry = document.createElement("div");
+  entry.className = "artist-entry";
+  entry.appendChild(row);
+  const history = parseHistory(item.History);
+  if (history.length) {
+    const section = document.createElement("div");
+    section.className = "artist-history";
+    const preview = document.createElement("div");
+    preview.className = "history-preview";
+    preview.textContent = "Latest commission: " + history[0];
+    section.appendChild(preview);
+    if (history.length > 1) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "history-toggle";
+      button.textContent = "View full history (" + history.length + ") +";
+      button.setAttribute("aria-expanded", "false");
+      const list = document.createElement("ul");
+      list.className = "history-details";
+      list.hidden = true;
+      history.forEach(record => {
+        const li = document.createElement("li");
+        li.textContent = record;
+        list.appendChild(li);
+      });
+      button.addEventListener("click", () => {
+        const expanding = list.hidden;
+        list.hidden = !expanding;
+        preview.hidden = expanding;
+        button.setAttribute("aria-expanded", String(expanding));
+        button.textContent = expanding ? "Hide full history −" : "View full history (" + history.length + ") +";
+      });
+      section.append(button, list);
+    }
+    entry.appendChild(section);
   }
-
-  const location = document.createElement("span");
-  location.className = "result-location";
-
-  location.textContent = item.Location || "";
-
-  row.appendChild(location);
-
-  const arrow = document.createElement("span");
-  arrow.className = "result-arrow";
-  arrow.textContent = website ? "↗" : "";
-
-  arrow.setAttribute("aria-hidden", "true");
-
-  row.appendChild(arrow);
-
-  return row;
+  return entry;
 }
 
 function renderResults() {
