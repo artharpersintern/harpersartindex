@@ -335,17 +335,15 @@ a {
 }
 
 .result-row.artist-row {
-  grid-template-columns: minmax(0, 1fr) 140px 160px 160px 30px;
+  grid-template-columns: minmax(0, 1fr) 140px 160px 160px minmax(190px, 280px);
 }
-.artist-entry { border-bottom: 1px solid var(--line); }
-.artist-entry .result-row { border-bottom: 0; }
-.result-agency { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
-.artist-history { padding: 0 0 15px; font-size: 13px; }
-.history-preview { color: var(--muted); margin-bottom: 7px; }
-.history-toggle { border: 0; padding: 4px 0; background: none; text-decoration: underline; text-underline-offset: 3px; font-size: 12px; }
-.history-details { margin: 10px 0 0; padding: 0 0 0 18px; color: var(--muted); }
-.history-details li { margin: 5px 0; }
-.history-details[hidden] { display: none; }
+/* The history occupies the final column, not a second line. */
+.result-history { font-size: 13px; color: var(--muted); line-height: 1.5; overflow-wrap: anywhere; }
+.result-history .history-label { display: block; font-size: 11px; margin-bottom: 3px; }
+.result-history .history-record + .history-record { margin-top: 7px; }
+.history-expand-all { border: 0; background: transparent; padding: 3px 0; color: var(--ink); font-size: 13px; white-space: nowrap; }
+.history-expand-all:hover { text-decoration: underline; text-underline-offset: 3px; }
+.toolbar-actions { display: flex; align-items: center; gap: 22px; }
 
 .result-row[href]:hover .result-name {
   text-decoration: underline;
@@ -540,14 +538,15 @@ a {
   }
 }
 @media (max-width: 1100px) {
-  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 110px 120px 120px 24px; }
+  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 110px 120px 120px 250px; }
 }
 @media (max-width: 850px) {
-  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 100px 100px 100px 20px; gap: 10px; }
+  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 100px 100px 100px 210px; gap: 10px; }
 }
 @media (max-width: 650px) {
-  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 24px; }
-  .result-row.artist-row .result-agency { grid-column: 1; grid-row: 4; }
+  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 1fr; }
+  .result-row.artist-row .result-agency { grid-column: 2; }
+  .result-row.artist-row .result-history { grid-column: 1 / -1; }
 }
 </style>
 </head>
@@ -698,6 +697,8 @@ a {
           Loading...
         </span>
 
+        <div class="toolbar-actions">
+        <button id="history-expand-all" class="history-expand-all" type="button" aria-pressed="false" hidden>Expand history +</button>
         <select
           class="sort-select"
           id="sort-select"
@@ -706,6 +707,7 @@ a {
           <option value="az">Sort: A–Z</option>
           <option value="za">Sort: Z–A</option>
         </select>
+        </div>
 
       </div>
 
@@ -764,6 +766,8 @@ const searchInput =
 
 const sortSelect =
   document.getElementById("sort-select");
+const historyExpandAll = document.getElementById("history-expand-all");
+let historyExpanded = false;
 
 const resultsList =
   document.getElementById("results-list");
@@ -1108,54 +1112,39 @@ function createResultRow(item) {
     span.className = className;
     span.textContent = value || "";
     row.appendChild(span);
+    return span;
   };
   addText("result-name", item.Name || "Untitled");
   if (isArtist) addText("result-specialty", (item.Specialty || "").replace(/;\s*/g, ", "));
   addText("result-location", item.Location);
-  if (isArtist) addText("result-agency", item.Agency);
-  addText("result-arrow", website ? "↗" : "");
-
-  if (!isArtist) return row;
-  const entry = document.createElement("div");
-  entry.className = "artist-entry";
-  entry.appendChild(row);
-  const history = parseHistory(item.History);
-  if (history.length) {
-    const section = document.createElement("div");
-    section.className = "artist-history";
-    const preview = document.createElement("div");
-    preview.className = "history-preview";
-    preview.textContent = "Latest commission: " + history[0];
-    section.appendChild(preview);
-    if (history.length > 1) {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "history-toggle";
-      button.textContent = "View full history (" + history.length + ") +";
-      button.setAttribute("aria-expanded", "false");
-      const list = document.createElement("ul");
-      list.className = "history-details";
-      list.hidden = true;
-      history.forEach(record => {
-        const li = document.createElement("li");
-        li.textContent = record;
-        list.appendChild(li);
+  if (isArtist) {
+    addText("result-agency", item.Agency);
+    const historyCell = document.createElement("div");
+    historyCell.className = "result-history";
+    const history = parseHistory(item.History);
+    if (history.length) {
+      const label = document.createElement("span");
+      label.className = "history-label";
+      label.textContent = historyExpanded ? "MAGAZINE HISTORY" : "LATEST COMMISSION";
+      historyCell.appendChild(label);
+      (historyExpanded ? history : history.slice(0, 1)).forEach(record => {
+        const recordDiv = document.createElement("div");
+        recordDiv.className = "history-record";
+        recordDiv.textContent = record;
+        historyCell.appendChild(recordDiv);
       });
-      button.addEventListener("click", () => {
-        const expanding = list.hidden;
-        list.hidden = !expanding;
-        preview.hidden = expanding;
-        button.setAttribute("aria-expanded", String(expanding));
-        button.textContent = expanding ? "Hide full history −" : "View full history (" + history.length + ") +";
-      });
-      section.append(button, list);
     }
-    entry.appendChild(section);
+    row.appendChild(historyCell);
+  } else {
+    addText("result-arrow", website ? "↗" : "");
   }
-  return entry;
+  return row;
 }
 
 function renderResults() {
+  historyExpandAll.hidden = activeCategory !== "Artists";
+  historyExpandAll.textContent = historyExpanded ? "Collapse history −" : "Expand history +";
+  historyExpandAll.setAttribute("aria-pressed", String(historyExpanded));
   const items = getFilteredItems();
 
   resultsCount.textContent =
@@ -1316,6 +1305,11 @@ sortSelect.addEventListener(
   "change",
   renderResults
 );
+
+historyExpandAll.addEventListener("click", () => {
+  historyExpanded = !historyExpanded;
+  renderResults();
+});
 
 /* INITIAL LOAD */
 
