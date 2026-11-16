@@ -15,7 +15,9 @@
   --serif: Georgia, "Times New Roman", serif;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -25,9 +27,19 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button, input, select { font: inherit; }
-button { cursor: pointer; }
-a { color: inherit; }
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
 
 .page {
   max-width: 1600px;
@@ -100,10 +112,15 @@ a { color: inherit; }
   background: transparent;
 }
 
-.nav-button.active::after { background: var(--ink); }
-.nav-button:hover { opacity: .6; }
+.nav-button.active::after {
+  background: var(--ink);
+}
 
-/* LAYOUT */
+.nav-button:hover {
+  opacity: 0.6;
+}
+
+/* MAIN LAYOUT */
 
 .directory-layout {
   display: grid;
@@ -143,7 +160,7 @@ a { color: inherit; }
   font-size: 13px;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: .25px;
+  letter-spacing: 0.25px;
 }
 
 .filter-heading span:last-child {
@@ -158,7 +175,9 @@ a { color: inherit; }
   margin-top: 20px;
 }
 
-.filter-options[hidden] { display: none; }
+.filter-options[hidden] {
+  display: none;
+}
 
 .filter-option {
   display: flex;
@@ -191,47 +210,58 @@ a { color: inherit; }
   color: var(--paper);
 }
 
-/* SEARCH */
+/* CLEAN, BORDERLESS SEARCH */
 
-.directory-main { min-width: 0; }
+.directory-main {
+  min-width: 0;
+}
 
-.search-wrapper { position: relative; }
+.search-wrapper {
+  position: relative;
+}
 
 .search-icon {
   position: absolute;
-  left: 23px;
+  left: 5px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 28px;
+  font-size: 25px;
   line-height: 1;
   pointer-events: none;
+  color: var(--muted);
 }
 
 .search-input {
   display: block;
   width: 100%;
-  height: 67px;
-  padding: 15px 20px 15px 56px;
-  border: 1px solid var(--ink);
+  height: 58px;
+  padding: 10px 20px 10px 42px;
+  border: none;
+  border-bottom: 1px solid #bdbab3;
   border-radius: 0;
   outline: none;
   background: transparent;
   color: var(--ink);
   font-size: 23px;
+  transition: border-color 0.2s ease;
 }
 
 .search-input::placeholder {
-  color: #77736e;
+  color: #8a8781;
   font-style: italic;
   opacity: 1;
 }
 
 .search-input:focus {
-  outline: 1px solid var(--ink);
-  outline-offset: 2px;
+  outline: none;
+  border-bottom: 1px solid var(--ink);
 }
 
-/* RESULTS */
+.search-input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+/* RESULTS HEADER */
 
 .results-toolbar {
   display: flex;
@@ -254,6 +284,8 @@ a { color: inherit; }
   padding: 3px 0;
 }
 
+/* RESULT ROWS */
+
 .result-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 185px 30px;
@@ -267,7 +299,10 @@ a { color: inherit; }
 
 .result-row.artist-row {
   grid-template-columns:
-    minmax(0, 1fr) 155px 185px 30px;
+    minmax(0, 1fr)
+    155px
+    185px
+    30px;
 }
 
 .result-row[href]:hover .result-name {
@@ -291,6 +326,7 @@ a { color: inherit; }
 
 .result-arrow {
   font-size: 25px;
+  font-weight: normal;
   text-align: right;
   line-height: 1;
 }
@@ -301,6 +337,8 @@ a { color: inherit; }
   font-size: 15px;
   color: var(--muted);
 }
+
+/* FOOTER */
 
 .site-footer {
   margin-top: 80px;
@@ -317,7 +355,10 @@ a { color: inherit; }
     flex-direction: column;
     align-items: flex-start;
   }
-  .navigation { gap: 23px; }
+
+  .navigation {
+    gap: 23px;
+  }
 }
 
 @media (max-width: 850px) {
@@ -325,26 +366,61 @@ a { color: inherit; }
     grid-template-columns: 190px minmax(0, 1fr);
     gap: 25px;
   }
-  .filters { padding-right: 20px; }
+
+  .filters {
+    padding-right: 20px;
+  }
+
   .result-row.artist-row {
-    grid-template-columns: minmax(0, 1fr) 120px 120px 24px;
+    grid-template-columns:
+      minmax(0, 1fr)
+      120px
+      120px
+      24px;
     gap: 12px;
   }
+
   .result-row {
-    grid-template-columns: minmax(0, 1fr) 140px 24px;
+    grid-template-columns:
+      minmax(0, 1fr)
+      140px
+      24px;
     gap: 12px;
   }
-  .result-name { font-size: 21px; }
+
+  .result-name {
+    font-size: 21px;
+  }
 }
 
 @media (max-width: 650px) {
-  .page { padding: 25px 5% 60px; }
-  .harpers-logo { width: 145px; }
-  .index-name { font-size: 27px; }
-  .branding { gap: 15px; }
-  .brand-divider { height: 32px; }
-  .navigation { gap: 17px; }
-  .nav-button { font-size: 14px; }
+  .page {
+    padding: 25px 5% 60px;
+  }
+
+  .harpers-logo {
+    width: 145px;
+  }
+
+  .index-name {
+    font-size: 27px;
+  }
+
+  .branding {
+    gap: 15px;
+  }
+
+  .brand-divider {
+    height: 32px;
+  }
+
+  .navigation {
+    gap: 17px;
+  }
+
+  .nav-button {
+    font-size: 14px;
+  }
 
   .directory-layout {
     display: flex;
@@ -361,7 +437,9 @@ a { color: inherit; }
     width: 100%;
   }
 
-  .filters-heading { font-size: 22px; }
+  .filters-heading {
+    font-size: 22px;
+  }
 
   .filter-options {
     display: grid;
@@ -369,8 +447,14 @@ a { color: inherit; }
     gap: 12px;
   }
 
-  .filter-options[hidden] { display: none; }
-  .search-input { height: 60px; font-size: 17px; }
+  .filter-options[hidden] {
+    display: none;
+  }
+
+  .search-input {
+    height: 55px;
+    font-size: 17px;
+  }
 
   .result-row,
   .result-row.artist-row {
@@ -412,7 +496,7 @@ a { color: inherit; }
   <header class="site-header">
     <div class="branding">
 
-      <!-- EXACT UPLOADED LOGO FILENAME -->
+      <!-- HARPER'S MAGAZINE LOGO -->
       <img
         src="Harper's_Magazine_logo.svg.webp"
         alt="Harper's Magazine"
@@ -420,21 +504,34 @@ a { color: inherit; }
       >
 
       <div class="brand-divider"></div>
+
       <div class="index-name">Art Index</div>
     </div>
 
-    <nav class="navigation" id="navigation"
-         aria-label="Directory sections">
-      <button class="nav-button"
-        data-category="Photo Agencies">Photo Agencies</button>
-      <button class="nav-button"
-        data-category="Illustration Agencies">Illustration Agencies</button>
-      <button class="nav-button"
-        data-category="Publishers">Publishers</button>
-      <button class="nav-button"
-        data-category="Archives">Archives</button>
-      <button class="nav-button active"
-        data-category="Artists">Artists</button>
+    <nav
+      class="navigation"
+      id="navigation"
+      aria-label="Directory sections"
+    >
+      <button class="nav-button" data-category="Photo Agencies">
+        Photo Agencies
+      </button>
+
+      <button class="nav-button" data-category="Illustration Agencies">
+        Illustration Agencies
+      </button>
+
+      <button class="nav-button" data-category="Publishers">
+        Publishers
+      </button>
+
+      <button class="nav-button" data-category="Archives">
+        Archives
+      </button>
+
+      <button class="nav-button active" data-category="Artists">
+        Artists
+      </button>
     </nav>
   </header>
 
@@ -444,37 +541,56 @@ a { color: inherit; }
       <h2 class="filters-heading">Filters</h2>
 
       <div class="filter-section">
-        <button class="filter-heading"
+        <button
+          class="filter-heading"
           id="specialty-toggle"
           aria-expanded="true"
-          aria-controls="specialty-options">
+          aria-controls="specialty-options"
+        >
           <span>Specialty</span>
           <span id="specialty-symbol">−</span>
         </button>
-        <div class="filter-options"
-          id="specialty-options"></div>
+
+        <div
+          class="filter-options"
+          id="specialty-options"
+        ></div>
       </div>
 
       <div class="filter-section">
-        <button class="filter-heading"
+        <button
+          class="filter-heading"
           id="location-toggle"
           aria-expanded="false"
-          aria-controls="location-options">
+          aria-controls="location-options"
+        >
           <span>Location</span>
           <span id="location-symbol">+</span>
         </button>
-        <div class="filter-options"
-          id="location-options" hidden></div>
+
+        <div
+          class="filter-options"
+          id="location-options"
+          hidden
+        ></div>
       </div>
 
-      <button class="clear-filters" id="clear-filters">
+      <button
+        class="clear-filters"
+        id="clear-filters"
+      >
         Clear Filters
       </button>
     </aside>
 
     <main class="directory-main">
+
       <div class="search-wrapper">
-        <span class="search-icon" aria-hidden="true">⌕</span>
+        <span
+          class="search-icon"
+          aria-hidden="true"
+        >⌕</span>
+
         <input
           class="search-input"
           type="search"
@@ -486,27 +602,44 @@ a { color: inherit; }
 
       <div class="results-toolbar">
         <span id="results-count">Loading...</span>
-        <select class="sort-select" id="sort-select"
-          aria-label="Sort results">
+
+        <select
+          class="sort-select"
+          id="sort-select"
+          aria-label="Sort results"
+        >
           <option value="az">Sort: A–Z</option>
           <option value="za">Sort: Z–A</option>
         </select>
       </div>
 
-      <div id="results-list" aria-live="polite">
+      <div
+        id="results-list"
+        aria-live="polite"
+      >
         <div class="loading-message">
           Loading directory...
         </div>
       </div>
+
     </main>
   </div>
 
   <footer class="site-footer">
     Harper's Art Index
   </footer>
+
 </div>
 
 <script>
+/*
+  GOOGLE SHEETS CONNECTIONS
+
+  Columns:
+  Name, Website, Specialty, Location,
+  Description, Contact, Tags, Notes
+*/
+
 const SHEET_ID =
   "2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8";
 
@@ -519,24 +652,36 @@ const SHEET_GIDS = {
 };
 
 function sheetURL(gid) {
-  return "https://docs.google.com/spreadsheets/d/e/" +
+  return (
+    "https://docs.google.com/spreadsheets/d/e/" +
     SHEET_ID +
     "/pub?single=true&output=csv&gid=" +
-    gid;
+    gid
+  );
 }
 
 const directoryData = {};
+
 let activeCategory = "Artists";
 let selectedSpecialties = new Set();
 let selectedLocations = new Set();
 let requestVersion = 0;
 
-const searchInput = document.getElementById("search-input");
-const sortSelect = document.getElementById("sort-select");
-const resultsList = document.getElementById("results-list");
-const resultsCount = document.getElementById("results-count");
+const searchInput =
+  document.getElementById("search-input");
+
+const sortSelect =
+  document.getElementById("sort-select");
+
+const resultsList =
+  document.getElementById("results-list");
+
+const resultsCount =
+  document.getElementById("results-count");
+
 const specialtyOptions =
   document.getElementById("specialty-options");
+
 const locationOptions =
   document.getElementById("location-options");
 
@@ -568,9 +713,13 @@ function parseCSV(text) {
       (char === "\n" || char === "\r") &&
       !insideQuotes
     ) {
-      if (char === "\r" && next === "\n") i++;
+      if (char === "\r" && next === "\n") {
+        i++;
+      }
+
       row.push(field);
       rows.push(row);
+
       row = [];
       field = "";
     } else {
@@ -583,7 +732,9 @@ function parseCSV(text) {
     rows.push(row);
   }
 
-  if (!rows.length) return [];
+  if (!rows.length) {
+    return [];
+  }
 
   const headers = rows.shift().map(
     header => header.trim()
@@ -593,35 +744,44 @@ function parseCSV(text) {
     .filter(row => row.some(cell => cell.trim()))
     .map(row => {
       const item = {};
+
       headers.forEach((header, index) => {
         item[header] = (row[index] || "").trim();
       });
+
       return item;
     });
 }
 
-/* LOAD GOOGLE SHEETS */
+/* LOAD DATA */
 
 async function loadCategory(category) {
   if (directoryData[category]) {
     return directoryData[category];
   }
 
+  const gid = SHEET_GIDS[category];
+
   const response = await fetch(
-    sheetURL(SHEET_GIDS[category]),
+    sheetURL(gid),
     { cache: "no-store" }
   );
 
   if (!response.ok) {
-    throw new Error("Unable to load " + category);
+    throw new Error(
+      "Unable to load " + category
+    );
   }
 
-  const data = parseCSV(await response.text());
+  const csvText = await response.text();
+  const data = parseCSV(csvText);
+
   directoryData[category] = data;
+
   return data;
 }
 
-/* FILTER UTILITIES */
+/* FILTER HELPERS */
 
 function splitValues(value) {
   return String(value || "")
@@ -636,7 +796,10 @@ function uniqueValues(items, field) {
   items.forEach(item => {
     splitValues(item[field]).forEach(value => {
       const key = value.toLocaleLowerCase();
-      if (!values.has(key)) values.set(key, value);
+
+      if (!values.has(key)) {
+        values.set(key, value);
+      }
     });
   });
 
@@ -657,9 +820,10 @@ function createFilterOption(value, type) {
   span.textContent = value;
 
   checkbox.addEventListener("change", () => {
-    const targetSet = type === "specialty"
-      ? selectedSpecialties
-      : selectedLocations;
+    const targetSet =
+      type === "specialty"
+        ? selectedSpecialties
+        : selectedLocations;
 
     if (checkbox.checked) {
       targetSet.add(value);
@@ -670,7 +834,9 @@ function createFilterOption(value, type) {
     renderResults();
   });
 
-  label.append(checkbox, span);
+  label.appendChild(checkbox);
+  label.appendChild(span);
+
   return label;
 }
 
@@ -680,8 +846,15 @@ function renderFilters() {
   specialtyOptions.replaceChildren();
   locationOptions.replaceChildren();
 
-  const specialties = uniqueValues(items, "Specialty");
-  const locations = uniqueValues(items, "Location");
+  const specialties = uniqueValues(
+    items,
+    "Specialty"
+  );
+
+  const locations = uniqueValues(
+    items,
+    "Location"
+  );
 
   specialties.forEach(value => {
     specialtyOptions.appendChild(
@@ -714,7 +887,7 @@ function getFilteredItems() {
   const items = directoryData[activeCategory] || [];
   const query = searchInput.value.trim().toLowerCase();
 
-  const filtered = items.filter(item => {
+  let filtered = items.filter(item => {
     const searchableText = [
       item.Name,
       item.Specialty,
@@ -722,28 +895,44 @@ function getFilteredItems() {
       item.Description,
       item.Tags,
       item.Notes
-    ].join(" ").toLowerCase();
+    ]
+      .join(" ")
+      .toLowerCase();
 
     if (query && !searchableText.includes(query)) {
       return false;
     }
 
     if (selectedSpecialties.size) {
-      const values = splitValues(item.Specialty)
-        .map(value => value.toLowerCase());
+      const itemSpecialties = splitValues(
+        item.Specialty
+      ).map(value => value.toLowerCase());
 
-      if (!Array.from(selectedSpecialties).some(
-        value => values.includes(value.toLowerCase())
-      )) return false;
+      const matchesSpecialty = Array.from(
+        selectedSpecialties
+      ).some(value =>
+        itemSpecialties.includes(value.toLowerCase())
+      );
+
+      if (!matchesSpecialty) {
+        return false;
+      }
     }
 
     if (selectedLocations.size) {
-      const values = splitValues(item.Location)
-        .map(value => value.toLowerCase());
+      const itemLocations = splitValues(
+        item.Location
+      ).map(value => value.toLowerCase());
 
-      if (!Array.from(selectedLocations).some(
-        value => values.includes(value.toLowerCase())
-      )) return false;
+      const matchesLocation = Array.from(
+        selectedLocations
+      ).some(value =>
+        itemLocations.includes(value.toLowerCase())
+      );
+
+      if (!matchesLocation) {
+        return false;
+      }
     }
 
     return true;
@@ -753,7 +942,10 @@ function getFilteredItems() {
     const comparison = (a.Name || "").localeCompare(
       b.Name || "",
       undefined,
-      { sensitivity: "base", numeric: true }
+      {
+        sensitivity: "base",
+        numeric: true
+      }
     );
 
     return sortSelect.value === "za"
@@ -764,11 +956,14 @@ function getFilteredItems() {
   return filtered;
 }
 
-/* SAFE EXTERNAL LINKS */
+/* SAFE WEBSITE LINKS */
 
 function safeWebsite(value) {
   const raw = String(value || "").trim();
-  if (!raw) return "";
+
+  if (!raw) {
+    return "";
+  }
 
   try {
     const candidate = /^https?:\/\//i.test(raw)
@@ -777,11 +972,19 @@ function safeWebsite(value) {
 
     const url = new URL(candidate);
 
-    if (!["https:", "http:"].includes(url.protocol)) {
+    if (
+      url.protocol !== "https:" &&
+      url.protocol !== "http:"
+    ) {
       return "";
     }
 
-    if (!url.hostname.includes(".")) return "";
+    if (
+      !url.hostname ||
+      !url.hostname.includes(".")
+    ) {
+      return "";
+    }
 
     return url.href;
   } catch {
@@ -789,7 +992,7 @@ function safeWebsite(value) {
   }
 }
 
-/* DIRECTORY ROWS */
+/* RESULT ROWS */
 
 function createResultRow(item) {
   const isArtist = activeCategory === "Artists";
@@ -799,13 +1002,14 @@ function createResultRow(item) {
     website ? "a" : "div"
   );
 
-  row.className = "result-row" +
-    (isArtist ? " artist-row" : "");
+  row.className =
+    "result-row" + (isArtist ? " artist-row" : "");
 
   if (website) {
     row.href = website;
     row.target = "_blank";
     row.rel = "noopener noreferrer";
+
     row.setAttribute(
       "aria-label",
       "Visit website for " + (item.Name || "this entry")
@@ -815,26 +1019,34 @@ function createResultRow(item) {
   const name = document.createElement("span");
   name.className = "result-name";
   name.textContent = item.Name || "Untitled";
+
   row.appendChild(name);
 
-  /* ARTISTS DISPLAY THEIR SPECIALTY */
+  /* SHOW SPECIALTY FOR ARTISTS */
+
   if (isArtist) {
     const specialty = document.createElement("span");
     specialty.className = "result-specialty";
+
     specialty.textContent = (item.Specialty || "")
       .replace(/;\s*/g, ", ");
+
     row.appendChild(specialty);
   }
 
   const location = document.createElement("span");
   location.className = "result-location";
+
   location.textContent = item.Location || "";
+
   row.appendChild(location);
 
   const arrow = document.createElement("span");
   arrow.className = "result-arrow";
   arrow.textContent = website ? "↗" : "";
+
   arrow.setAttribute("aria-hidden", "true");
+
   row.appendChild(arrow);
 
   return row;
@@ -843,7 +1055,8 @@ function createResultRow(item) {
 function renderResults() {
   const items = getFilteredItems();
 
-  resultsCount.textContent = items.length +
+  resultsCount.textContent =
+    items.length +
     (items.length === 1 ? " result" : " results");
 
   resultsList.replaceChildren();
@@ -852,6 +1065,7 @@ function renderResults() {
     const empty = document.createElement("div");
     empty.className = "empty-message";
     empty.textContent = "No results found.";
+
     resultsList.appendChild(empty);
     return;
   }
@@ -859,7 +1073,9 @@ function renderResults() {
   const fragment = document.createDocumentFragment();
 
   items.forEach(item => {
-    fragment.appendChild(createResultRow(item));
+    fragment.appendChild(
+      createResultRow(item)
+    );
   });
 
   resultsList.appendChild(fragment);
@@ -873,13 +1089,17 @@ async function switchCategory(category) {
 
   selectedSpecialties.clear();
   selectedLocations.clear();
+
   searchInput.value = "";
   sortSelect.value = "az";
 
   document.querySelectorAll(".nav-button")
     .forEach(button => {
-      const active = button.dataset.category === category;
+      const active =
+        button.dataset.category === category;
+
       button.classList.toggle("active", active);
+
       if (active) {
         button.setAttribute("aria-current", "page");
       } else {
@@ -889,19 +1109,25 @@ async function switchCategory(category) {
 
   resultsList.innerHTML =
     '<div class="loading-message">Loading directory...</div>';
+
   resultsCount.textContent = "Loading...";
 
   try {
     await loadCategory(category);
 
-    if (version !== requestVersion) return;
+    if (version !== requestVersion) {
+      return;
+    }
 
     renderFilters();
     renderResults();
   } catch (error) {
-    if (version !== requestVersion) return;
+    if (version !== requestVersion) {
+      return;
+    }
 
     console.error(error);
+
     resultsCount.textContent = "Unavailable";
 
     resultsList.innerHTML =
@@ -912,6 +1138,8 @@ async function switchCategory(category) {
   }
 }
 
+/* NAVIGATION EVENTS */
+
 document.querySelectorAll(".nav-button")
   .forEach(button => {
     button.addEventListener("click", () => {
@@ -921,7 +1149,11 @@ document.querySelectorAll(".nav-button")
 
 /* COLLAPSIBLE FILTERS */
 
-function setupFilterToggle(toggleId, optionsId, symbolId) {
+function setupFilterToggle(
+  toggleId,
+  optionsId,
+  symbolId
+) {
   const toggle = document.getElementById(toggleId);
   const options = document.getElementById(optionsId);
   const symbol = document.getElementById(symbolId);
@@ -958,6 +1190,7 @@ document.getElementById("clear-filters")
   .addEventListener("click", () => {
     selectedSpecialties.clear();
     selectedLocations.clear();
+
     searchInput.value = "";
 
     document.querySelectorAll(
@@ -969,10 +1202,20 @@ document.getElementById("clear-filters")
     renderResults();
   });
 
-searchInput.addEventListener("input", renderResults);
-sortSelect.addEventListener("change", renderResults);
+/* SEARCH EVENTS */
 
-/* START ON ARTISTS */
+searchInput.addEventListener(
+  "input",
+  renderResults
+);
+
+sortSelect.addEventListener(
+  "change",
+  renderResults
+);
+
+/* INITIAL LOAD */
+
 switchCategory("Artists");
 </script>
 
