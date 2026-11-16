@@ -15,13 +15,9 @@
   --serif: Georgia, "Times New Roman", serif;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -31,21 +27,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button,
-input,
-select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-a {
-  color: inherit;
-}
-
-/* PAGE */
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
 
 .page {
   max-width: 1600px;
@@ -53,26 +37,20 @@ a {
   padding: 0 4% 90px;
 }
 
-/* STICKY HEADER */
+/* HEADER */
 
 .site-header {
   position: sticky;
   top: 0;
   z-index: 1000;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 35px;
-
   padding: 36px 0 27px;
-
   background: var(--paper);
   border-bottom: 1px solid var(--ink);
 }
-
-/* Solid background prevents scrolling rows
-   from appearing through the header. */
 
 .site-header::before {
   content: "";
@@ -146,11 +124,9 @@ a {
   background: var(--ink);
 }
 
-.nav-button:hover {
-  opacity: 0.6;
-}
+.nav-button:hover { opacity: 0.6; }
 
-/* MAIN LAYOUT */
+/* LAYOUT */
 
 .directory-layout {
   display: grid;
@@ -190,7 +166,6 @@ a {
   font-size: 13px;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 0.25px;
 }
 
 .filter-heading span:last-child {
@@ -205,9 +180,7 @@ a {
   margin-top: 20px;
 }
 
-.filter-options[hidden] {
-  display: none;
-}
+.filter-options[hidden] { display: none; }
 
 .filter-option {
   display: flex;
@@ -242,13 +215,9 @@ a {
 
 /* SEARCH */
 
-.directory-main {
-  min-width: 0;
-}
+.directory-main { min-width: 0; }
 
-.search-wrapper {
-  position: relative;
-}
+.search-wrapper { position: relative; }
 
 .search-icon {
   position: absolute;
@@ -256,7 +225,6 @@ a {
   top: 50%;
   transform: translateY(-50%);
   font-size: 25px;
-  line-height: 1;
   pointer-events: none;
   color: var(--muted);
 }
@@ -266,17 +234,13 @@ a {
   width: 100%;
   height: 58px;
   padding: 10px 20px 10px 42px;
-
   border: none;
   border-bottom: 1px solid #bdbab3;
   border-radius: 0;
-
   outline: none;
   background: transparent;
   color: var(--ink);
-
   font-size: 23px;
-  transition: border-color 0.2s ease;
 }
 
 .search-input::placeholder {
@@ -286,15 +250,10 @@ a {
 }
 
 .search-input:focus {
-  outline: none;
   border-bottom: 1px solid var(--ink);
 }
 
-.search-input::-webkit-search-cancel-button {
-  cursor: pointer;
-}
-
-/* RESULTS TOOLBAR */
+/* TOOLBAR */
 
 .results-toolbar {
   display: flex;
@@ -307,6 +266,12 @@ a {
   font-size: 13px;
 }
 
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
 .sort-select {
   border: 0;
   background: transparent;
@@ -317,15 +282,25 @@ a {
   padding: 3px 0;
 }
 
+.history-expand-all {
+  border: 0;
+  background: transparent;
+  padding: 3px 0;
+  color: var(--ink);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.history-expand-all:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* RESULT ROWS */
 
 .result-row {
   display: grid;
-  grid-template-columns:
-    minmax(0, 1fr)
-    185px
-    30px;
-
+  grid-template-columns: minmax(0, 1fr) 185px 30px;
   gap: 20px;
   align-items: center;
   min-height: 56px;
@@ -335,15 +310,13 @@ a {
 }
 
 .result-row.artist-row {
-  grid-template-columns: minmax(0, 1fr) 140px 160px 160px minmax(190px, 280px);
+  grid-template-columns:
+    minmax(0, 1fr)
+    140px
+    160px
+    160px
+    minmax(190px, 280px);
 }
-/* The history occupies the final column, not a second line. */
-.result-history { font-size: 13px; color: var(--muted); line-height: 1.5; overflow-wrap: anywhere; }
-.result-history .history-label { display: block; font-size: 11px; margin-bottom: 3px; }
-.result-history .history-record + .history-record { margin-top: 7px; }
-.history-expand-all { border: 0; background: transparent; padding: 3px 0; color: var(--ink); font-size: 13px; white-space: nowrap; }
-.history-expand-all:hover { text-decoration: underline; text-underline-offset: 3px; }
-.toolbar-actions { display: flex; align-items: center; gap: 22px; }
 
 .result-row[href]:hover .result-name {
   text-decoration: underline;
@@ -357,7 +330,8 @@ a {
 }
 
 .result-specialty,
-.result-location {
+.result-location,
+.result-agency {
   font-size: 13px;
   line-height: 1.35;
   color: var(--muted);
@@ -366,9 +340,28 @@ a {
 
 .result-arrow {
   font-size: 25px;
-  font-weight: normal;
   text-align: right;
   line-height: 1;
+}
+
+/* MAGAZINE HISTORY */
+
+.result-history {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.history-label {
+  display: block;
+  font-size: 11px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.history-record + .history-record {
+  margin-top: 8px;
 }
 
 .empty-message,
@@ -390,84 +383,65 @@ a {
 
 /* RESPONSIVE */
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .site-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 15px;
   }
 
-  .navigation {
-    gap: 23px;
-  }
-}
-
-@media (max-width: 850px) {
-  .directory-layout {
-    grid-template-columns:
-      190px
-      minmax(0, 1fr);
-    gap: 25px;
-  }
-
-  .filters {
-    padding-right: 20px;
-  }
+  .navigation { gap: 23px; }
 
   .result-row.artist-row {
     grid-template-columns:
       minmax(0, 1fr)
+      110px
       120px
       120px
-      24px;
+      minmax(180px, 250px);
     gap: 12px;
   }
+}
 
-  .result-row {
+@media (max-width: 900px) {
+  .directory-layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 25px;
+  }
+
+  .filters { padding-right: 20px; }
+
+  .result-row.artist-row {
     grid-template-columns:
-      minmax(0, 1fr)
-      140px
-      24px;
-    gap: 12px;
+      minmax(0, 1fr) 1fr;
+    gap: 8px 14px;
   }
 
-  .result-name {
-    font-size: 21px;
+  .artist-row .result-name {
+    grid-column: 1 / -1;
+  }
+
+  .artist-row .result-history {
+    grid-column: 1 / -1;
   }
 }
 
 @media (max-width: 650px) {
-  .page {
-    padding: 0 5% 60px;
-  }
+  .page { padding: 0 5% 60px; }
 
-  .site-header {
-    padding: 20px 0 16px;
-  }
+  .site-header { padding: 20px 0 16px; }
 
-  .harpers-logo {
-    width: 145px;
-  }
+  .harpers-logo { width: 145px; }
 
-  .index-name {
-    font-size: 27px;
-  }
+  .index-name { font-size: 27px; }
 
-  .branding {
-    gap: 15px;
-  }
+  .branding { gap: 15px; }
 
-  .brand-divider {
-    height: 32px;
-  }
+  .brand-divider { height: 32px; }
 
-  .navigation {
-    gap: 17px;
-  }
+  .navigation { gap: 17px; }
 
-  .nav-button {
-    font-size: 14px;
-  }
+  .nav-button { font-size: 14px; }
 
   .directory-layout {
     display: flex;
@@ -484,51 +458,35 @@ a {
     width: 100%;
   }
 
-  .filters-heading {
-    font-size: 22px;
-  }
+  .filters-heading { font-size: 22px; }
 
   .filter-options {
     display: grid;
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
 
-  .filter-options[hidden] {
-    display: none;
-  }
+  .filter-options[hidden] { display: none; }
 
   .search-input {
     height: 55px;
     font-size: 17px;
   }
 
-  .result-row,
-  .result-row.artist-row {
-    grid-template-columns:
-      minmax(0, 1fr)
-      24px;
+  .result-row {
+    grid-template-columns: minmax(0, 1fr) 24px;
     gap: 6px 12px;
   }
 
-  .result-name {
-    font-size: 21px;
+  .result-name { font-size: 21px; }
+
+  .result-row:not(.artist-row) .result-name {
     grid-column: 1;
     grid-row: 1;
   }
 
-  .result-specialty {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .result-location {
-    grid-column: 1;
-    grid-row: 3;
-  }
-
   .result-row:not(.artist-row) .result-location {
+    grid-column: 1;
     grid-row: 2;
   }
 
@@ -536,17 +494,8 @@ a {
     grid-column: 2;
     grid-row: 1;
   }
-}
-@media (max-width: 1100px) {
-  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 110px 120px 120px 250px; }
-}
-@media (max-width: 850px) {
-  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 100px 100px 100px 210px; gap: 10px; }
-}
-@media (max-width: 650px) {
-  .result-row.artist-row { grid-template-columns: minmax(0, 1fr) 1fr; }
-  .result-row.artist-row .result-agency { grid-column: 2; }
-  .result-row.artist-row .result-history { grid-column: 1 / -1; }
+
+  .toolbar-actions { gap: 12px; }
 }
 </style>
 </head>
@@ -554,185 +503,137 @@ a {
 <body>
 <div class="page">
 
-  <!-- STICKY HEADER -->
-  <header class="site-header">
+<header class="site-header">
+  <div class="branding">
+    <img
+      src="Harper's_Magazine_logo.svg.webp"
+      alt="Harper's Magazine"
+      class="harpers-logo"
+    >
+    <div class="brand-divider"></div>
+    <div class="index-name">Art Index</div>
+  </div>
 
-    <div class="branding">
+  <nav class="navigation" aria-label="Directory sections">
+    <button class="nav-button"
+      data-category="Photo Agencies">
+      Photo Agencies
+    </button>
 
-      <img
-        src="Harper's_Magazine_logo.svg.webp"
-        alt="Harper's Magazine"
-        class="harpers-logo"
-      >
+    <button class="nav-button"
+      data-category="Illustration Agencies">
+      Illustration Agencies
+    </button>
 
-      <div class="brand-divider"></div>
+    <button class="nav-button"
+      data-category="Publishers">
+      Publishers
+    </button>
 
-      <div class="index-name">
-        Art Index
-      </div>
+    <button class="nav-button"
+      data-category="Archives">
+      Archives
+    </button>
 
+    <button class="nav-button active"
+      data-category="Artists">
+      Artists
+    </button>
+  </nav>
+</header>
+
+<div class="directory-layout">
+
+  <aside class="filters">
+    <h2 class="filters-heading">Filters</h2>
+
+    <div class="filter-section">
+      <button
+        class="filter-heading"
+        id="specialty-toggle"
+        aria-expanded="true"
+        aria-controls="specialty-options">
+        <span>Specialty</span>
+        <span id="specialty-symbol">−</span>
+      </button>
+      <div class="filter-options"
+        id="specialty-options"></div>
     </div>
 
-    <nav
-      class="navigation"
-      id="navigation"
-      aria-label="Directory sections"
-    >
+    <div class="filter-section">
       <button
-        class="nav-button"
-        data-category="Photo Agencies"
-      >
-        Photo Agencies
+        class="filter-heading"
+        id="location-toggle"
+        aria-expanded="false"
+        aria-controls="location-options">
+        <span>Location</span>
+        <span id="location-symbol">+</span>
       </button>
+      <div class="filter-options"
+        id="location-options"
+        hidden></div>
+    </div>
 
-      <button
-        class="nav-button"
-        data-category="Illustration Agencies"
-      >
-        Illustration Agencies
-      </button>
+    <button class="clear-filters"
+      id="clear-filters">
+      Clear Filters
+    </button>
+  </aside>
 
-      <button
-        class="nav-button"
-        data-category="Publishers"
-      >
-        Publishers
-      </button>
+  <main class="directory-main">
 
-      <button
-        class="nav-button"
-        data-category="Archives"
-      >
-        Archives
-      </button>
+    <div class="search-wrapper">
+      <span class="search-icon"
+        aria-hidden="true">⌕</span>
+      <input
+        class="search-input"
+        type="search"
+        id="search-input"
+        placeholder="Search agencies, artists, specialties..."
+        aria-label="Search the directory">
+    </div>
 
-      <button
-        class="nav-button active"
-        data-category="Artists"
-      >
-        Artists
-      </button>
-    </nav>
+    <div class="results-toolbar">
+      <span id="results-count">Loading...</span>
 
-  </header>
-
-  <div class="directory-layout">
-
-    <aside class="filters">
-
-      <h2 class="filters-heading">
-        Filters
-      </h2>
-
-      <div class="filter-section">
-
+      <div class="toolbar-actions">
         <button
-          class="filter-heading"
-          id="specialty-toggle"
-          aria-expanded="true"
-          aria-controls="specialty-options"
-        >
-          <span>Specialty</span>
-          <span id="specialty-symbol">−</span>
+          id="history-expand-all"
+          class="history-expand-all"
+          type="button"
+          aria-pressed="false"
+          hidden>
+          Expand history +
         </button>
 
-        <div
-          class="filter-options"
-          id="specialty-options"
-        ></div>
-
-      </div>
-
-      <div class="filter-section">
-
-        <button
-          class="filter-heading"
-          id="location-toggle"
-          aria-expanded="false"
-          aria-controls="location-options"
-        >
-          <span>Location</span>
-          <span id="location-symbol">+</span>
-        </button>
-
-        <div
-          class="filter-options"
-          id="location-options"
-          hidden
-        ></div>
-
-      </div>
-
-      <button
-        class="clear-filters"
-        id="clear-filters"
-      >
-        Clear Filters
-      </button>
-
-    </aside>
-
-    <main class="directory-main">
-
-      <div class="search-wrapper">
-
-        <span
-          class="search-icon"
-          aria-hidden="true"
-        >⌕</span>
-
-        <input
-          class="search-input"
-          type="search"
-          id="search-input"
-          placeholder="Search agencies, artists, specialties..."
-          aria-label="Search the directory"
-        >
-
-      </div>
-
-      <div class="results-toolbar">
-
-        <span id="results-count">
-          Loading...
-        </span>
-
-        <div class="toolbar-actions">
-        <button id="history-expand-all" class="history-expand-all" type="button" aria-pressed="false" hidden>Expand history +</button>
         <select
           class="sort-select"
           id="sort-select"
-          aria-label="Sort results"
-        >
+          aria-label="Sort results">
           <option value="az">Sort: A–Z</option>
           <option value="za">Sort: Z–A</option>
         </select>
-        </div>
-
       </div>
+    </div>
 
-      <div
-        id="results-list"
-        aria-live="polite"
-      >
-        <div class="loading-message">
-          Loading directory...
-        </div>
+    <div id="results-list" aria-live="polite">
+      <div class="loading-message">
+        Loading directory...
       </div>
+    </div>
 
-    </main>
+  </main>
+</div>
 
-  </div>
-
-  <footer class="site-footer">
-    Harper's Art Index
-  </footer>
+<footer class="site-footer">
+  Harper's Art Index
+</footer>
 
 </div>
 
 <script>
 
-/* GOOGLE SHEETS */
+/* GOOGLE SHEETS CONFIGURATION */
 
 const SHEET_ID =
   "2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8";
@@ -754,20 +655,24 @@ function sheetURL(gid) {
   );
 }
 
+/* STATE */
+
 const directoryData = {};
 
 let activeCategory = "Artists";
 let selectedSpecialties = new Set();
 let selectedLocations = new Set();
 let requestVersion = 0;
+let historyExpanded = false;
 
 const searchInput =
   document.getElementById("search-input");
 
 const sortSelect =
   document.getElementById("sort-select");
-const historyExpandAll = document.getElementById("history-expand-all");
-let historyExpanded = false;
+
+const historyExpandAll =
+  document.getElementById("history-expand-all");
 
 const resultsList =
   document.getElementById("results-list");
@@ -815,7 +720,6 @@ function parseCSV(text) {
 
       row.push(field);
       rows.push(row);
-
       row = [];
       field = "";
     } else {
@@ -828,9 +732,7 @@ function parseCSV(text) {
     rows.push(row);
   }
 
-  if (!rows.length) {
-    return [];
-  }
+  if (!rows.length) return [];
 
   const headers = rows.shift().map(
     header => header.trim()
@@ -864,16 +766,13 @@ async function loadCategory(category) {
   );
 
   if (!response.ok) {
-    throw new Error(
-      "Unable to load " + category
-    );
+    throw new Error("Unable to load " + category);
   }
 
   const csvText = await response.text();
   const data = parseCSV(csvText);
 
   directoryData[category] = data;
-
   return data;
 }
 
@@ -932,7 +831,6 @@ function createFilterOption(value, type) {
 
   label.appendChild(checkbox);
   label.appendChild(span);
-
   return label;
 }
 
@@ -942,15 +840,8 @@ function renderFilters() {
   specialtyOptions.replaceChildren();
   locationOptions.replaceChildren();
 
-  const specialties = uniqueValues(
-    items,
-    "Specialty"
-  );
-
-  const locations = uniqueValues(
-    items,
-    "Location"
-  );
+  const specialties = uniqueValues(items, "Specialty");
+  const locations = uniqueValues(items, "Location");
 
   specialties.forEach(value => {
     specialtyOptions.appendChild(
@@ -993,9 +884,7 @@ function getFilteredItems() {
       item.History,
       item.Tags,
       item.Notes
-    ]
-      .join(" ")
-      .toLowerCase();
+    ].join(" ").toLowerCase();
 
     if (query && !searchableText.includes(query)) {
       return false;
@@ -1012,9 +901,7 @@ function getFilteredItems() {
         itemSpecialties.includes(value.toLowerCase())
       );
 
-      if (!matchesSpecialty) {
-        return false;
-      }
+      if (!matchesSpecialty) return false;
     }
 
     if (selectedLocations.size) {
@@ -1028,9 +915,7 @@ function getFilteredItems() {
         itemLocations.includes(value.toLowerCase())
       );
 
-      if (!matchesLocation) {
-        return false;
-      }
+      if (!matchesLocation) return false;
     }
 
     return true;
@@ -1059,9 +944,7 @@ function getFilteredItems() {
 function safeWebsite(value) {
   const raw = String(value || "").trim();
 
-  if (!raw) {
-    return "";
-  }
+  if (!raw) return "";
 
   try {
     const candidate = /^https?:\/\//i.test(raw)
@@ -1077,10 +960,7 @@ function safeWebsite(value) {
       return "";
     }
 
-    if (
-      !url.hostname ||
-      !url.hostname.includes(".")
-    ) {
+    if (!url.hostname || !url.hostname.includes(".")) {
       return "";
     }
 
@@ -1090,23 +970,124 @@ function safeWebsite(value) {
   }
 }
 
-/* RESULT ROWS */
+/* MAGAZINE HISTORY */
+
+/*
+Converts:
+2024-01 | miscellany | Farwell
+to:
+January 2024 | miscellany | Farwell
+
+Also supports:
+01-2024
+January 2024
+*/
+
+function formatHistoryDate(dateText) {
+  const raw = String(dateText || "").trim();
+
+  const months = [
+    "January", "February", "March", "April",
+    "May", "June", "July", "August",
+    "September", "October", "November", "December"
+  ];
+
+  let match = raw.match(/^(\d{4})-(\d{1,2})$/);
+
+  if (match) {
+    const year = match[1];
+    const month = Number(match[2]);
+
+    if (month >= 1 && month <= 12) {
+      return months[month - 1] + " " + year;
+    }
+  }
+
+  match = raw.match(/^(\d{1,2})-(\d{4})$/);
+
+  if (match) {
+    const month = Number(match[1]);
+    const year = match[2];
+
+    if (month >= 1 && month <= 12) {
+      return months[month - 1] + " " + year;
+    }
+  }
+
+  return raw;
+}
 
 function parseHistory(value) {
-  return String(value || "").split(";").map(s => s.trim()).filter(Boolean)
-    .sort((a, b) => b.localeCompare(a));
+  return String(value || "")
+    .split(";")
+    .map(record => record.trim())
+    .filter(Boolean)
+    .sort((a, b) => {
+      const dateA = a.split("|")[0].trim();
+      const dateB = b.split("|")[0].trim();
+
+      const getDateKey = value => {
+        let match = value.match(/^(\d{4})-(\d{1,2})$/);
+
+        if (match) {
+          return Number(match[1]) * 100 +
+            Number(match[2]);
+        }
+
+        match = value.match(/^(\d{1,2})-(\d{4})$/);
+
+        if (match) {
+          return Number(match[2]) * 100 +
+            Number(match[1]);
+        }
+
+        const parsed = Date.parse("1 " + value);
+
+        if (!Number.isNaN(parsed)) {
+          const date = new Date(parsed);
+
+          return date.getFullYear() * 100 +
+            date.getMonth() + 1;
+        }
+
+        return 0;
+      };
+
+      return getDateKey(dateB) - getDateKey(dateA);
+    });
 }
+
+function formatHistoryRecord(record) {
+  const parts = String(record)
+    .split("|")
+    .map(part => part.trim());
+
+  if (!parts.length) return "";
+
+  parts[0] = formatHistoryDate(parts[0]);
+
+  return parts.join(" | ");
+}
+
+/* RESULT ROWS */
 
 function createResultRow(item) {
   const isArtist = activeCategory === "Artists";
   const website = safeWebsite(item.Website);
-  const row = document.createElement(website ? "a" : "div");
-  row.className = "result-row" + (isArtist ? " artist-row" : "");
+
+  const row = document.createElement(
+    website ? "a" : "div"
+  );
+
+  row.className =
+    "result-row" + (isArtist ? " artist-row" : "");
+
   if (website) {
     row.href = website;
     row.target = "_blank";
     row.rel = "noopener noreferrer";
   }
+
   const addText = (className, value) => {
     const span = document.createElement("span");
     span.className = className;
@@ -1114,37 +1095,74 @@ function createResultRow(item) {
     row.appendChild(span);
     return span;
   };
+
   addText("result-name", item.Name || "Untitled");
-  if (isArtist) addText("result-specialty", (item.Specialty || "").replace(/;\s*/g, ", "));
+
+  if (isArtist) {
+    addText(
+      "result-specialty",
+      (item.Specialty || "").replace(/;\s*/g, ", ")
+    );
+  }
+
   addText("result-location", item.Location);
+
   if (isArtist) {
     addText("result-agency", item.Agency);
+
     const historyCell = document.createElement("div");
     historyCell.className = "result-history";
+
     const history = parseHistory(item.History);
+
     if (history.length) {
       const label = document.createElement("span");
       label.className = "history-label";
-      label.textContent = historyExpanded ? "MAGAZINE HISTORY" : "LATEST COMMISSION";
+
+      label.textContent = historyExpanded
+        ? "MAGAZINE HISTORY"
+        : "LATEST COMMISSION";
+
       historyCell.appendChild(label);
-      (historyExpanded ? history : history.slice(0, 1)).forEach(record => {
+
+      const visibleHistory = historyExpanded
+        ? history
+        : history.slice(0, 1);
+
+      visibleHistory.forEach(record => {
         const recordDiv = document.createElement("div");
         recordDiv.className = "history-record";
-        recordDiv.textContent = record;
+
+        recordDiv.textContent =
+          formatHistoryRecord(record);
+
         historyCell.appendChild(recordDiv);
       });
     }
+
     row.appendChild(historyCell);
   } else {
     addText("result-arrow", website ? "↗" : "");
   }
+
   return row;
 }
 
+/* RENDER RESULTS */
+
 function renderResults() {
-  historyExpandAll.hidden = activeCategory !== "Artists";
-  historyExpandAll.textContent = historyExpanded ? "Collapse history −" : "Expand history +";
-  historyExpandAll.setAttribute("aria-pressed", String(historyExpanded));
+  historyExpandAll.hidden =
+    activeCategory !== "Artists";
+
+  historyExpandAll.textContent = historyExpanded
+    ? "Collapse history −"
+    : "Expand history +";
+
+  historyExpandAll.setAttribute(
+    "aria-pressed",
+    String(historyExpanded)
+  );
+
   const items = getFilteredItems();
 
   resultsCount.textContent =
@@ -1157,7 +1175,6 @@ function renderResults() {
     const empty = document.createElement("div");
     empty.className = "empty-message";
     empty.textContent = "No results found.";
-
     resultsList.appendChild(empty);
     return;
   }
@@ -1165,9 +1182,7 @@ function renderResults() {
   const fragment = document.createDocumentFragment();
 
   items.forEach(item => {
-    fragment.appendChild(
-      createResultRow(item)
-    );
+    fragment.appendChild(createResultRow(item));
   });
 
   resultsList.appendChild(fragment);
@@ -1207,16 +1222,12 @@ async function switchCategory(category) {
   try {
     await loadCategory(category);
 
-    if (version !== requestVersion) {
-      return;
-    }
+    if (version !== requestVersion) return;
 
     renderFilters();
     renderResults();
   } catch (error) {
-    if (version !== requestVersion) {
-      return;
-    }
+    if (version !== requestVersion) return;
 
     console.error(error);
 
@@ -1282,7 +1293,6 @@ document.getElementById("clear-filters")
   .addEventListener("click", () => {
     selectedSpecialties.clear();
     selectedLocations.clear();
-
     searchInput.value = "";
 
     document.querySelectorAll(
@@ -1294,17 +1304,10 @@ document.getElementById("clear-filters")
     renderResults();
   });
 
-/* SEARCH EVENTS */
+/* SEARCH AND SORT EVENTS */
 
-searchInput.addEventListener(
-  "input",
-  renderResults
-);
-
-sortSelect.addEventListener(
-  "change",
-  renderResults
-);
+searchInput.addEventListener("input", renderResults);
+sortSelect.addEventListener("change", renderResults);
 
 historyExpandAll.addEventListener("click", () => {
   historyExpanded = !historyExpanded;
