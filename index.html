@@ -19,6 +19,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   background: var(--paper);
@@ -41,21 +45,45 @@ a {
   color: inherit;
 }
 
+/* PAGE */
+
 .page {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 36px 4% 90px;
+  padding: 0 4% 90px;
 }
 
-/* HEADER */
+/* STICKY HEADER */
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 35px;
+
+  padding: 36px 0 27px;
+
+  background: var(--paper);
   border-bottom: 1px solid var(--ink);
-  padding-bottom: 27px;
+}
+
+/* Solid background prevents scrolling rows
+   from appearing through the header. */
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -100vw;
+  right: -100vw;
+  background: var(--paper);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .branding {
@@ -84,6 +112,8 @@ a {
   font-style: italic;
   white-space: nowrap;
 }
+
+/* NAVIGATION */
 
 .navigation {
   display: flex;
@@ -210,7 +240,7 @@ a {
   color: var(--paper);
 }
 
-/* CLEAN, BORDERLESS SEARCH */
+/* SEARCH */
 
 .directory-main {
   min-width: 0;
@@ -236,12 +266,15 @@ a {
   width: 100%;
   height: 58px;
   padding: 10px 20px 10px 42px;
+
   border: none;
   border-bottom: 1px solid #bdbab3;
   border-radius: 0;
+
   outline: none;
   background: transparent;
   color: var(--ink);
+
   font-size: 23px;
   transition: border-color 0.2s ease;
 }
@@ -261,7 +294,7 @@ a {
   cursor: pointer;
 }
 
-/* RESULTS HEADER */
+/* RESULTS TOOLBAR */
 
 .results-toolbar {
   display: flex;
@@ -288,7 +321,11 @@ a {
 
 .result-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 185px 30px;
+  grid-template-columns:
+    minmax(0, 1fr)
+    185px
+    30px;
+
   gap: 20px;
   align-items: center;
   min-height: 56px;
@@ -354,6 +391,7 @@ a {
   .site-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 15px;
   }
 
   .navigation {
@@ -363,7 +401,9 @@ a {
 
 @media (max-width: 850px) {
   .directory-layout {
-    grid-template-columns: 190px minmax(0, 1fr);
+    grid-template-columns:
+      190px
+      minmax(0, 1fr);
     gap: 25px;
   }
 
@@ -395,7 +435,11 @@ a {
 
 @media (max-width: 650px) {
   .page {
-    padding: 25px 5% 60px;
+    padding: 0 5% 60px;
+  }
+
+  .site-header {
+    padding: 20px 0 16px;
   }
 
   .harpers-logo {
@@ -443,7 +487,8 @@ a {
 
   .filter-options {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
 
@@ -458,7 +503,9 @@ a {
 
   .result-row,
   .result-row.artist-row {
-    grid-template-columns: minmax(0, 1fr) 24px;
+    grid-template-columns:
+      minmax(0, 1fr)
+      24px;
     gap: 6px 12px;
   }
 
@@ -493,10 +540,11 @@ a {
 <body>
 <div class="page">
 
+  <!-- STICKY HEADER -->
   <header class="site-header">
+
     <div class="branding">
 
-      <!-- HARPER'S MAGAZINE LOGO -->
       <img
         src="Harper's_Magazine_logo.svg.webp"
         alt="Harper's Magazine"
@@ -505,7 +553,10 @@ a {
 
       <div class="brand-divider"></div>
 
-      <div class="index-name">Art Index</div>
+      <div class="index-name">
+        Art Index
+      </div>
+
     </div>
 
     <nav
@@ -513,34 +564,54 @@ a {
       id="navigation"
       aria-label="Directory sections"
     >
-      <button class="nav-button" data-category="Photo Agencies">
+      <button
+        class="nav-button"
+        data-category="Photo Agencies"
+      >
         Photo Agencies
       </button>
 
-      <button class="nav-button" data-category="Illustration Agencies">
+      <button
+        class="nav-button"
+        data-category="Illustration Agencies"
+      >
         Illustration Agencies
       </button>
 
-      <button class="nav-button" data-category="Publishers">
+      <button
+        class="nav-button"
+        data-category="Publishers"
+      >
         Publishers
       </button>
 
-      <button class="nav-button" data-category="Archives">
+      <button
+        class="nav-button"
+        data-category="Archives"
+      >
         Archives
       </button>
 
-      <button class="nav-button active" data-category="Artists">
+      <button
+        class="nav-button active"
+        data-category="Artists"
+      >
         Artists
       </button>
     </nav>
+
   </header>
 
   <div class="directory-layout">
 
     <aside class="filters">
-      <h2 class="filters-heading">Filters</h2>
+
+      <h2 class="filters-heading">
+        Filters
+      </h2>
 
       <div class="filter-section">
+
         <button
           class="filter-heading"
           id="specialty-toggle"
@@ -555,9 +626,11 @@ a {
           class="filter-options"
           id="specialty-options"
         ></div>
+
       </div>
 
       <div class="filter-section">
+
         <button
           class="filter-heading"
           id="location-toggle"
@@ -573,6 +646,7 @@ a {
           id="location-options"
           hidden
         ></div>
+
       </div>
 
       <button
@@ -581,11 +655,13 @@ a {
       >
         Clear Filters
       </button>
+
     </aside>
 
     <main class="directory-main">
 
       <div class="search-wrapper">
+
         <span
           class="search-icon"
           aria-hidden="true"
@@ -598,10 +674,14 @@ a {
           placeholder="Search agencies, artists, specialties..."
           aria-label="Search the directory"
         >
+
       </div>
 
       <div class="results-toolbar">
-        <span id="results-count">Loading...</span>
+
+        <span id="results-count">
+          Loading...
+        </span>
 
         <select
           class="sort-select"
@@ -611,6 +691,7 @@ a {
           <option value="az">Sort: A–Z</option>
           <option value="za">Sort: Z–A</option>
         </select>
+
       </div>
 
       <div
@@ -623,6 +704,7 @@ a {
       </div>
 
     </main>
+
   </div>
 
   <footer class="site-footer">
@@ -632,13 +714,8 @@ a {
 </div>
 
 <script>
-/*
-  GOOGLE SHEETS CONNECTIONS
 
-  Columns:
-  Name, Website, Specialty, Location,
-  Description, Contact, Tags, Notes
-*/
+/* GOOGLE SHEETS */
 
 const SHEET_ID =
   "2PACX-1vS4gQxnhzjt5h6Qxk9EVbP71FvFY336JQMdJvp6pnjgsZGEEn4esrvDaeOUk_ihm0fVojdMNyfN5yP8";
@@ -1022,7 +1099,7 @@ function createResultRow(item) {
 
   row.appendChild(name);
 
-  /* SHOW SPECIALTY FOR ARTISTS */
+  /* ARTIST SPECIALTY */
 
   if (isArtist) {
     const specialty = document.createElement("span");
@@ -1217,7 +1294,7 @@ sortSelect.addEventListener(
 /* INITIAL LOAD */
 
 switchCategory("Artists");
-</script>
 
+</script>
 </body>
 </html>
