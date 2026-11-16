@@ -269,7 +269,44 @@ a { color: inherit; }
 .toolbar-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 22px;
+  flex-wrap: wrap;
+}
+
+/* ARTIST VIEW TOGGLE */
+
+.artist-view-toggle {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--line);
+}
+
+.artist-view-toggle[hidden] {
+  display: none;
+}
+
+.view-option {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 7px 12px;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.view-option + .view-option {
+  border-left: 1px solid var(--line);
+}
+
+.view-option.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.view-option:hover:not(.active) {
+  background: #ece9e2;
 }
 
 .sort-select {
@@ -424,6 +461,10 @@ a { color: inherit; }
   .artist-row .result-history {
     grid-column: 1 / -1;
   }
+
+  .toolbar-actions {
+    gap: 12px;
+  }
 }
 
 @media (max-width: 650px) {
@@ -495,7 +536,20 @@ a { color: inherit; }
     grid-row: 1;
   }
 
-  .toolbar-actions { gap: 12px; }
+  .results-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .toolbar-actions {
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .view-option {
+    font-size: 11px;
+    padding: 7px 9px;
+  }
 }
 </style>
 </head>
@@ -597,6 +651,35 @@ a { color: inherit; }
       <span id="results-count">Loading...</span>
 
       <div class="toolbar-actions">
+
+        <!-- ALL ARTISTS / COMMISSIONED ARTISTS -->
+
+        <div
+          class="artist-view-toggle"
+          id="artist-view-toggle"
+          role="group"
+          aria-label="Artist directory view">
+
+          <button
+            type="button"
+            class="view-option active"
+            data-view="all"
+            aria-pressed="true">
+            All Artists
+          </button>
+
+          <button
+            type="button"
+            class="view-option"
+            data-view="commissioned"
+            aria-pressed="false">
+            Commissioned Artists
+          </button>
+
+        </div>
+
+        <!-- HISTORY TOGGLE -->
+
         <button
           id="history-expand-all"
           class="history-expand-all"
@@ -606,6 +689,8 @@ a { color: inherit; }
           Expand history +
         </button>
 
+        <!-- SORT -->
+
         <select
           class="sort-select"
           id="sort-select"
@@ -613,6 +698,7 @@ a { color: inherit; }
           <option value="az">Sort: A–Z</option>
           <option value="za">Sort: Z–A</option>
         </select>
+
       </div>
     </div>
 
@@ -665,6 +751,10 @@ let selectedLocations = new Set();
 let requestVersion = 0;
 let historyExpanded = false;
 
+/* NEW: ARTIST VIEW STATE */
+
+let artistView = "all";
+
 const searchInput =
   document.getElementById("search-input");
 
@@ -673,6 +763,9 @@ const sortSelect =
 
 const historyExpandAll =
   document.getElementById("history-expand-all");
+
+const artistViewToggle =
+  document.getElementById("artist-view-toggle");
 
 const resultsList =
   document.getElementById("results-list");
@@ -875,6 +968,25 @@ function getFilteredItems() {
   const query = searchInput.value.trim().toLowerCase();
 
   let filtered = items.filter(item => {
+
+    /*
+      COMMISSIONED ARTISTS FILTER
+
+      An artist is considered commissioned if
+      the History column contains at least
+      one nonempty record.
+
+      No additional CSV column is required.
+    */
+
+    if (
+      activeCategory === "Artists" &&
+      artistView === "commissioned" &&
+      parseHistory(item.History).length === 0
+    ) {
+      return false;
+    }
+
     const searchableText = [
       item.Name,
       item.Specialty,
@@ -973,14 +1085,15 @@ function safeWebsite(value) {
 /* MAGAZINE HISTORY */
 
 /*
-Converts:
-2024-01 | miscellany | Farwell
-to:
-January 2024 | miscellany | Farwell
+  Converts:
+  2024-01 | miscellany | Farwell
 
-Also supports:
-01-2024
-January 2024
+  To:
+  January 2024 | miscellany | Farwell
+
+  Also supports:
+  01-2024
+  January 2024
 */
 
 function formatHistoryDate(dateText) {
@@ -1148,9 +1261,31 @@ function createResultRow(item) {
   return row;
 }
 
+/* ARTIST VIEW CONTROLS */
+
+function updateArtistViewToggle() {
+  const isArtist = activeCategory === "Artists";
+
+  artistViewToggle.hidden = !isArtist;
+
+  document.querySelectorAll(".view-option")
+    .forEach(button => {
+      const active =
+        button.dataset.view === artistView;
+
+      button.classList.toggle("active", active);
+      button.setAttribute(
+        "aria-pressed",
+        String(active)
+      );
+    });
+}
+
 /* RENDER RESULTS */
 
 function renderResults() {
+  updateArtistViewToggle();
+
   historyExpandAll.hidden =
     activeCategory !== "Artists";
 
@@ -1214,6 +1349,11 @@ async function switchCategory(category) {
       }
     });
 
+  updateArtistViewToggle();
+
+  historyExpandAll.hidden =
+    category !== "Artists";
+
   resultsList.innerHTML =
     '<div class="loading-message">Loading directory...</div>';
 
@@ -1247,6 +1387,18 @@ document.querySelectorAll(".nav-button")
   .forEach(button => {
     button.addEventListener("click", () => {
       switchCategory(button.dataset.category);
+    });
+  });
+
+/* ARTIST VIEW TOGGLE EVENTS */
+
+document.querySelectorAll(".view-option")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      artistView = button.dataset.view;
+
+      updateArtistViewToggle();
+      renderResults();
     });
   });
 
@@ -1308,6 +1460,8 @@ document.getElementById("clear-filters")
 
 searchInput.addEventListener("input", renderResults);
 sortSelect.addEventListener("change", renderResults);
+
+/* EXPAND / COLLAPSE HISTORY */
 
 historyExpandAll.addEventListener("click", () => {
   historyExpanded = !historyExpanded;
